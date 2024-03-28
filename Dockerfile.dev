@@ -1,0 +1,21 @@
+FROM node:20.5.1-bookworm as base
+
+ENV NODE_ENV=development
+
+WORKDIR /home/node/click-n-build
+
+# Build
+
+FROM base as build
+
+COPY --link . .
+COPY --link package*.json .
+RUN npm install
+
+# Run
+
+FROM base
+
+COPY --from=build /home/node/click-n-build .
+
+CMD [ "npm", "run", "dev" ]

@@ -1,0 +1,32 @@
+{
+  "name": "click-n-build",
+  "version": "0.0.1",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "build": "nuxt build",
+    "dev": "nuxt dev",
+    "generate": "nuxt generate",
+    "preview": "nuxt preview",
+    "postinstall": "nuxt prepare"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mpapasterg/click-n-build"
+  },
+  "devDependencies": {
+    "@nuxt/devtools": "^1.1.5",
+    "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
+    "@pinia/nuxt": "^0.5.1",
+    "@quasar/extras": "^1.16.10",
+    "nuxt": "^3.11.1",
+    "nuxt-quasar-ui": "^2.0.8",
+    "pinia": "^2.1.7",
+    "quasar": "^2.15.1",
+    "typescript": "^5.4.3",
+    "vue": "^3.4.21",
+    "vue-router": "^4.3.0",
+    "vue-tsc": "^1.8.22",
+    "zod": "^3.22.4"
+  }
+}
