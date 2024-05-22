@@ -1,9 +1,4 @@
-import {
-  http,
-  HttpResponse,
-  RequestHandler,
-  type HttpResponseResolver,
-} from "msw";
+import { http, RequestHandler, type ResponseResolver } from "msw";
 import * as cookie from "cookie";
 import { jwtVerify, SignJWT, type JWTPayload } from "jose";
 
@@ -23,9 +18,9 @@ type AddParameters<
 // Define higher order handler for API endpoints requiring authentication
 export const verified: (
   resolver: (
-    ...args: [...Parameters<HttpResponseResolver>, JWTPayload]
-  ) => ReturnType<HttpResponseResolver>
-) => HttpResponseResolver = (resolver) => async (info) => {
+    ...args: [...Parameters<ResponseResolver>, JWTPayload]
+  ) => ReturnType<ResponseResolver>
+) => ResponseResolver = (resolver) => async (info) => {
   const request = info.request;
 
   const accessToken: string | null = request.headers.get("x-auth-token");
@@ -34,7 +29,7 @@ export const verified: (
     const response: ServerErrorResponse = {
       message: "Missing access token",
     };
-    return HttpResponse.json(response, {
+    return Response.json(response, {
       status: 400,
       statusText: "Bad Request",
     });
@@ -48,7 +43,7 @@ export const verified: (
     const response: ServerErrorResponse = {
       message: "Invalid access token",
     };
-    return HttpResponse.json(response, {
+    return Response.json(response, {
       status: 401,
       statusText: "Unauthorized",
     });
@@ -71,7 +66,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid Credentials",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -83,7 +78,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid credentials",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -94,7 +89,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Email does not match user",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 404,
         statusText: "Not Found",
       });
@@ -103,7 +98,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid password",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 401,
         statusText: "Unauthorized",
       });
@@ -119,7 +114,7 @@ export const handlers: Array<RequestHandler> = [
       })
       .setExpirationTime(60 * 60 * 24)
       .sign(mockSecret);
-    return HttpResponse.json(response, {
+    return Response.json(response, {
       headers: {
         "Set-Cookie": cookie.serialize("x-auth-token", accessToken, {
           httpOnly: true,
@@ -151,7 +146,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid Credentials",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -167,7 +162,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid credentials",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -178,7 +173,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "User with specified email already exists",
       };
-      return HttpResponse.json(response, {
+      return Response.json(response, {
         status: 409,
         statusText: "Conflict",
       });
@@ -188,10 +183,10 @@ export const handlers: Array<RequestHandler> = [
       email,
       username,
     };
-    return HttpResponse.json(response, { status: 201, statusText: "Created" });
+    return Response.json(response, { status: 201, statusText: "Created" });
   }),
   http.post(SignOutPostURL, () => {
     const response: SignOutPostResponse = {};
-    return HttpResponse.json(response, { status: 200, statusText: "OK" });
+    return Response.json(response, { status: 200, statusText: "OK" });
   }),
 ];

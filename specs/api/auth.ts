@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { Schemas } from "../global";
 
 // Field Schemas
 
@@ -36,14 +37,6 @@ export const AuthSchema = z.object({
   email: EmailSchema,
 });
 
-// API Endpoint Schemas
-
-export const ClientRequestSchema = z.object({}).catchall(z.string());
-export const ServerResponseSchema = z.object({});
-export const ServerErrorResponseSchema = ServerResponseSchema.extend({
-  message: z.string(),
-});
-
 // POST /api/auth/signin
 
 export const SignInPostURL: string = "/api/auth/signin";
@@ -54,6 +47,10 @@ export const SignInPostRequestSchema = ClientRequestSchema.extend({
 export const SignInPostResponseSchema = ServerResponseSchema.extend(
   AuthSchema.shape
 );
+Schemas[SignInPostURL] = {
+  request: SignInPostRequestSchema,
+  response: SignInPostResponseSchema,
+};
 
 // POST /api/auth/signup
 
@@ -66,21 +63,27 @@ export const SignUpPostRequestSchema = ClientRequestSchema.extend({
 export const SignUpPostResponseSchema = ServerResponseSchema.extend(
   AuthSchema.shape
 );
+Schemas[SignUpPostURL] = {
+  request: SignUpPostRequestSchema,
+  response: SignUpPostResponseSchema,
+};
 
 // POST /api/auth/signout
 
 export const SignOutPostURL: string = "/api/auth/signout";
 export const SignOutPostRequestSchema = ClientRequestSchema;
 export const SignOutPostResponseSchema = ServerResponseSchema;
+Schemas[SignOutPostURL] = {
+  request: SignOutPostRequestSchema,
+  response: SignOutPostResponseSchema,
+};
+
+// Add to API schemas
 
 // Global Schema Types Declaration
 
 declare global {
   type Auth = z.infer<typeof AuthSchema>;
-
-  type ClientRequest = z.infer<typeof ClientRequestSchema>;
-  type ServerResponse = z.infer<typeof ServerResponseSchema>;
-  type ServerErrorResponse = z.infer<typeof ServerErrorResponseSchema>;
 
   // POST /api/auth/signin
   type SignInPostRequest = z.infer<typeof SignInPostRequestSchema>;
