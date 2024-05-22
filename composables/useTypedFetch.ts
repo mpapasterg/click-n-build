@@ -12,8 +12,6 @@ export const useTypedFetch = async <T>(
       if (result.success) {
         return result.data;
       } else {
-        // TODO: Remove in production
-        console.log(result.error);
         throw new Error(
           `Fetch from '${request.toString()}' did not return a valid response.`
         );

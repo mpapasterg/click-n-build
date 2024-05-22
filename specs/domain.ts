@@ -2,15 +2,11 @@ class User {
   public constructor() {}
 }
 
-class Guest extends User {
-  public constructor() {
-    super();
-  }
-}
+class Guest extends User {}
 
 class Builder extends User {
   private id: number;
-  private nickname: string;
+  private username: string;
   private email: string;
   private password: string;
   private billing_information: BillingInformation;
@@ -18,7 +14,7 @@ class Builder extends User {
 
   public constructor(
     id: number,
-    nickname: string,
+    username: string,
     email: string,
     password: string,
     billing_information: BillingInformation,
@@ -26,7 +22,7 @@ class Builder extends User {
   ) {
     super();
     this.id = id;
-    this.nickname = nickname;
+    this.username = username;
     this.email = email;
     this.password = password;
     this.billing_information = billing_information;
