@@ -23,10 +23,11 @@ export default defineNuxtConfig({
   css: ["assets/css/global.css"],
   imports: {
     autoImport: true,
-    dirs: ["stores"],
+    dirs: ["stores/**", "specs/**"],
   },
   plugins: ["plugins/ofetch.ts"],
   modules: [
+    "@nuxt/test-utils/module",
     "nuxt-quasar-ui",
     "@pinia/nuxt",
     "@pinia-plugin-persistedstate/nuxt",
@@ -92,4 +93,10 @@ export default defineNuxtConfig({
   ssr: true,
   spaLoadingTemplate: "public/spa-loading-template.html",
   telemetry: false,
+  nitro: {
+    imports: {
+      autoImport: true,
+      dirs: ["specs/**"],
+    },
+  },
 });

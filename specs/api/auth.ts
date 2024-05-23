@@ -1,6 +1,7 @@
 import { z } from "zod";
+import { Schemas } from "../global";
 
-// User Related Schemas
+// Field Schemas
 
 export const UsernameSchema = z
   .string()
@@ -36,60 +37,63 @@ export const AuthSchema = z.object({
   email: EmailSchema,
 });
 
-export const UserSchema = AuthSchema.extend({});
+// POST /api/auth/signin
 
-export const ClientRequestSchema = z.object({}).catchall(z.string());
-
-export const ServerResponseSchema = z.object({
-  message: z.string(),
-});
-
-// API Schemas
-
-// /api/auth/signin
-
+export const SignInPostURL: string = "/api/auth/signin";
 export const SignInPostRequestSchema = ClientRequestSchema.extend({
-  username: UsernameSchema,
+  email: EmailSchema,
   password: PasswordSchema,
 });
+export const SignInPostResponseSchema = ServerResponseSchema.extend(
+  AuthSchema.shape
+);
+Schemas[SignInPostURL] = {
+  request: SignInPostRequestSchema,
+  response: SignInPostResponseSchema,
+};
 
-export const SignInPostResponseSchema = ServerResponseSchema.extend({
-  username: UsernameSchema,
-  email: EmailSchema,
-});
+// POST /api/auth/signup
 
-// /api/auth/signup
-
+export const SignUpPostURL: string = "/api/auth/signup";
 export const SignUpPostRequestSchema = ClientRequestSchema.extend({
   username: UsernameSchema,
   email: EmailSchema,
   password: PasswordSchema,
 });
+export const SignUpPostResponseSchema = ServerResponseSchema.extend(
+  AuthSchema.shape
+);
+Schemas[SignUpPostURL] = {
+  request: SignUpPostRequestSchema,
+  response: SignUpPostResponseSchema,
+};
 
-export const SignUpPostResponseSchema = ServerResponseSchema;
+// POST /api/auth/signout
 
-// /api/auth/signout
-
+export const SignOutPostURL: string = "/api/auth/signout";
+export const SignOutPostRequestSchema = ClientRequestSchema;
 export const SignOutPostResponseSchema = ServerResponseSchema;
+Schemas[SignOutPostURL] = {
+  request: SignOutPostRequestSchema,
+  response: SignOutPostResponseSchema,
+};
+
+// Add to API schemas
 
 // Global Schema Types Declaration
 
 declare global {
-  type Username = z.infer<typeof UsernameSchema>;
-  type Email = z.infer<typeof EmailSchema>;
-  type Password = z.infer<typeof PasswordSchema>;
   type Auth = z.infer<typeof AuthSchema>;
-  type User = z.infer<typeof UserSchema>;
 
-  type ClientRequest = z.infer<typeof ClientRequestSchema>;
-
-  type ServerResponse = z.infer<typeof ServerResponseSchema>;
-
+  // POST /api/auth/signin
   type SignInPostRequest = z.infer<typeof SignInPostRequestSchema>;
   type SignInPostResponse = z.infer<typeof SignInPostResponseSchema>;
 
+  // POST /api/auth/signup
   type SignUpPostRequest = z.infer<typeof SignUpPostRequestSchema>;
   type SignUpPostResponse = z.infer<typeof SignUpPostResponseSchema>;
 
+  // POST /api/auth/signout
+  type SignOutPostRequest = z.infer<typeof SignOutPostRequestSchema>;
   type SignOutPostResponse = z.infer<typeof SignOutPostResponseSchema>;
 }
