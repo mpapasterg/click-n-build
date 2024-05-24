@@ -29,7 +29,7 @@ const GPUSchema = new Schema<GPU>({
   vram_type: String,
   vram_size: Number,
   pcie_type: String,
-}); 
+});
 
 const RAMSchema = new Schema<RAM>({
   name: { type: String, unique: true, required: true },
@@ -43,7 +43,7 @@ const RAMSchema = new Schema<RAM>({
   clock_speed: Number,
   cas_latency: Number,
   rgb_lighting: Boolean,
-}); 
+});
 
 const CoolingSystemSchema = new Schema<CoolingSystem>({
   name: { type: String, unique: true, required: true },
@@ -53,7 +53,7 @@ const CoolingSystemSchema = new Schema<CoolingSystem>({
   manufacturer: String,
   type: String,
   active_cooling: Boolean,
-}); 
+});
 
 const DecorationSchema = new Schema<Decoration>({
   name: { type: String, unique: true, required: true },
@@ -62,7 +62,7 @@ const DecorationSchema = new Schema<Decoration>({
   description: String,
   manufacturer: String,
   type: String,
-}); 
+});
 
 const MotherboardSchema = new Schema<Motherboard>({
   name: { type: String, unique: true, required: true },
@@ -77,7 +77,7 @@ const MotherboardSchema = new Schema<Motherboard>({
   pcie_slots: [String],
   external_io: [String],
   rgb_lighting: Boolean,
-}); 
+});
 
 const PSUSchema = new Schema<PSU>({
   name: { type: String, unique: true, required: true },
@@ -89,7 +89,7 @@ const PSUSchema = new Schema<PSU>({
   max_wattage: Number,
   certification: String,
   modularity_type: String,
-}); 
+});
 
 const CaseSchema = new Schema<Case>({
   name: { type: String, unique: true, required: true },
@@ -98,10 +98,10 @@ const CaseSchema = new Schema<Case>({
   description: String,
   manufacturer: String,
   type: String,
-  motherboard_types_supprted: [String],
+  motherboard_types_supported: [String],
   skin: String,
   features: [String],
-}); 
+});
 
 const DriveSchema = new Schema<Drive>({
   name: { type: String, unique: true, required: true },
@@ -111,12 +111,17 @@ const DriveSchema = new Schema<Drive>({
   manufacturer: String,
   storage_type: String,
   size: Number,
-  read_speed:  Number,
+  read_speed: Number,
   write_speed: Number,
   buffer_size: Number,
-}); 
+});
 
-const BuildSchema = new Schema<Build>({
+const BuildSchema = new Schema<
+  Build & {
+    library: typeof Schema.ObjectId;
+    wall_of_builds: typeof Schema.ObjectId;
+  }
+>({
   cpu: {
     type: Schema.ObjectId,
     ref: CPU.name,
@@ -152,7 +157,7 @@ const BuildSchema = new Schema<Build>({
     ref: PSU.name,
     required: true,
   },
-  case: {
+  pc_case: {
     type: Schema.ObjectId,
     ref: Case.name,
     required: true,
@@ -175,7 +180,9 @@ const BuildSchema = new Schema<Build>({
 
 const LibrarySchema = new Schema<Library>({});
 
-const BillingInformationSchema = new Schema<BillingInformation>({
+const BillingInformationSchema = new Schema<
+  BillingInformation & { _id: boolean }
+>({
   _id: false,
   name: {
     type: String,
@@ -190,14 +197,14 @@ const BillingInformationSchema = new Schema<BillingInformation>({
     required: true,
   },
   postal_code: {
-    type: String,
+    type: Number,
     required: true,
   },
   city: {
     type: String,
     required: true,
   },
-  county: {
+  country: {
     type: String,
     required: true,
   },
@@ -261,8 +268,9 @@ const RatingSchema = new Schema<Rating>({
 });
 
 const InventoryItemSchema = new Schema<InventoryItem>({
-  component_name: {
-    type: String,
+  component: {
+    type: Schema.ObjectId,
+    ref: Component.name,
     required: true,
     unique: true,
   },

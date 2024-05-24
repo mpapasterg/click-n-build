@@ -21,6 +21,7 @@
     "@pinia-plugin-persistedstate/nuxt": "^1.2.0",
     "@pinia/nuxt": "^0.5.1",
     "@quasar/extras": "^1.16.10",
+    "@types/mongoose": "^5.11.97",
     "@vitest/coverage-v8": "^1.6.0",
     "cookie": "^0.6.0",
     "happy-dom": "^14.11.0",

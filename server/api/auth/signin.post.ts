@@ -17,8 +17,9 @@ export default defineEventHandler(async (event) => {
     });
   }
 
-  // Check credentials validity
-  if (email !== mockEmail) {
+  // Find user with given email
+  const user: Builder | null = await BuilderModel.findOne({ email: email });
+  if (user === null) {
     throw createError({
       statusCode: sanitizeStatusCode(404),
       statusMessage: sanitizeStatusMessage("Not Found"),
@@ -27,7 +28,9 @@ export default defineEventHandler(async (event) => {
       },
     });
   }
-  if (password !== mockPassword) {
+
+  // Check credentials validity
+  if (user.password === password) {
     throw createError({
       statusCode: sanitizeStatusCode(401),
       statusMessage: sanitizeStatusMessage("Unauthorized"),
@@ -40,14 +43,14 @@ export default defineEventHandler(async (event) => {
   // Generate JWT access token
   const auth: Auth = {
     email,
-    username: mockUsername,
+    username: user.username,
   };
   const accessToken = await new SignJWT(auth)
     .setProtectedHeader({
       alg: "HS256",
     })
     .setExpirationTime(60 * 60 * 24)
-    .sign(mockSecret);
+    .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
   // Store access token to cookie
   setCookie(event, "x-access-token", accessToken, {
