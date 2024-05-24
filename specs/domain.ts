@@ -1,10 +1,10 @@
-class Component {
-  private id: number;
-  private name: string;
-  private price: number;
-  private image: string;
-  private description: string;
-  private manufacturer: string;
+abstract class Component {
+  public id: number;
+  public name: string;
+  public price: number;
+  public image: string;
+  public description: string;
+  public manufacturer: string;
 
   public constructor(
     id: number,
@@ -23,15 +23,15 @@ class Component {
   }
 }
 
-class BasicComponent extends Component {}
+abstract class BasicComponent extends Component {}
 
 class CPU extends BasicComponent {
-  private architecture: string;
-  private cores: number;
-  private threads: number;
-  private base_clock: number;
-  private oc_clock: number;
-  private caches: Array<string>;
+  public architecture: string;
+  public cores: number;
+  public threads: number;
+  public base_clock: number;
+  public oc_clock: number;
+  public caches: Array<string>;
 
   public constructor(
     id: number,
@@ -58,12 +58,12 @@ class CPU extends BasicComponent {
 }
 
 class GPU extends BasicComponent {
-  private architecture: string;
-  private base_clock: number;
-  private oc_clock: number;
-  private vram_type: string;
-  private vram_size: number;
-  private pcie_type: string;
+  public architecture: string;
+  public base_clock: number;
+  public oc_clock: number;
+  public vram_type: string;
+  public vram_size: number;
+  public pcie_type: string;
 
   public constructor(
     id: number,
@@ -90,12 +90,12 @@ class GPU extends BasicComponent {
 }
 
 class RAM extends BasicComponent {
-  private type: string;
-  private modules: number;
-  private size: number;
-  private clock_speed: number;
-  private cas_latency: number;
-  private rgb_lighting: boolean;
+  public type: string;
+  public modules: number;
+  public size: number;
+  public clock_speed: number;
+  public cas_latency: number;
+  public rgb_lighting: boolean;
 
   public constructor(
     id: number,
@@ -121,11 +121,11 @@ class RAM extends BasicComponent {
   }
 }
 
-class DependentComponent extends Component {}
+abstract class DependentComponent extends Component {}
 
 class CoolingSystem extends DependentComponent {
-  private type: string;
-  private active_cooling: boolean;
+  public type: string;
+  public active_cooling: boolean;
 
   public constructor(
     id: number,
@@ -145,7 +145,7 @@ class CoolingSystem extends DependentComponent {
 }
 
 class Decoration extends DependentComponent {
-  private type: string;
+  public type: string;
 
   public constructor(
     id: number,
@@ -162,13 +162,13 @@ class Decoration extends DependentComponent {
 }
 
 class Motherboard extends DependentComponent {
-  private size_type: string;
-  private socket: string;
-  private chipset: string;
-  private memory_channels: Array<string>;
-  private pcie_slots: Array<string>;
-  private external_io: Array<string>;
-  private rgb_lighting: boolean;
+  public size_type: string;
+  public socket: string;
+  public chipset: string;
+  public memory_channels: Array<string>;
+  public pcie_slots: Array<string>;
+  public external_io: Array<string>;
+  public rgb_lighting: boolean;
 
   public constructor(
     id: number,
@@ -197,10 +197,10 @@ class Motherboard extends DependentComponent {
 }
 
 class PSU extends DependentComponent {
-  private size_type: string;
-  private max_wattage: number;
-  private certification: string;
-  private modularity_type: string;
+  public size_type: string;
+  public max_wattage: number;
+  public certification: string;
+  public modularity_type: string;
 
   public constructor(
     id: number,
@@ -223,10 +223,10 @@ class PSU extends DependentComponent {
 }
 
 class Case extends DependentComponent {
-  private type: string;
-  private motherboard_types_supported: Array<string>;
-  private skin: string;
-  private features: Array<string>;
+  public type: string;
+  public motherboard_types_supported: Array<string>;
+  public skin: string;
+  public features: Array<string>;
 
   public constructor(
     id: number,
@@ -249,11 +249,11 @@ class Case extends DependentComponent {
 }
 
 class Drive extends DependentComponent {
-  private storage_type: string;
-  private size: number;
-  private read_speed: number;
-  private write_speed: number;
-  private buffer_size: number;
+  public storage_type: string;
+  public size: number;
+  public read_speed: number;
+  public write_speed: number;
+  public buffer_size: number;
 
   public constructor(
     id: number,
@@ -278,17 +278,44 @@ class Drive extends DependentComponent {
 }
 
 class Build {
-  private id: number;
-  private components: Array<Component>;
+  public id: number;
+  public gpu: GPU;
+  public cpu: CPU;
+  public ram: RAM;
+  public cooling_system: CoolingSystem;
+  public decoration: Decoration;
+  public motherboard: Motherboard;
+  public psu: PSU;
+  public pc_case: Case;
+  public drive: Drive;
 
-  public constructor(id: number, components: Array<Component>) {
+  public constructor(
+    id: number,
+    gpu: GPU,
+    cpu: CPU,
+    ram: RAM,
+    cooling_system: CoolingSystem,
+    decoration: Decoration,
+    motherboard: Motherboard,
+    psu: PSU,
+    pc_case: Case,
+    drive: Drive
+  ) {
     this.id = id;
-    this.components = components;
+    this.gpu = gpu;
+    this.cpu = cpu;
+    this.ram = ram;
+    this.cooling_system = cooling_system;
+    this.decoration = decoration;
+    this.motherboard = motherboard;
+    this.psu = psu;
+    this.pc_case = pc_case;
+    this.drive = drive;
   }
 }
 
 class Library {
-  private builds: Array<Build>;
+  public builds: Array<Build>;
 
   public constructor(builds: Array<Build>) {
     this.builds = builds;
@@ -296,7 +323,7 @@ class Library {
 }
 
 class WallOfBuilds {
-  private builds: Array<Build>;
+  public builds: Array<Build>;
 
   public constructor(builds: Array<Build>) {
     this.builds = builds;
@@ -304,12 +331,12 @@ class WallOfBuilds {
 }
 
 class BillingInformation {
-  private name: string;
-  private surname: string;
-  private address: string;
-  private postal_code: number;
-  private city: string;
-  private country: string;
+  public name: string;
+  public surname: string;
+  public address: string;
+  public postal_code: number;
+  public city: string;
+  public country: string;
 
   public constructor(
     name: string,
@@ -329,9 +356,9 @@ class BillingInformation {
 }
 
 class Purchase {
-  private builds: Array<Build>;
-  private billing_information: BillingInformation;
-  private price: number;
+  public builds: Array<Build>;
+  public billing_information: BillingInformation;
+  public price: number;
 
   public constructor(
     builds: Array<Build>,
@@ -344,19 +371,19 @@ class Purchase {
   }
 }
 
-class User {
+abstract class User {
   public constructor() {}
 }
 
 class Guest extends User {}
 
 class Builder extends User {
-  private id: number;
-  private username: string;
-  private email: string;
-  private password: string;
-  private billing_information: BillingInformation;
-  private library: Library;
+  public id: number;
+  public username: string;
+  public email: string;
+  public password: string;
+  public billing_information: BillingInformation;
+  public library: Library;
 
   public constructor(
     id: number,
@@ -377,11 +404,11 @@ class Builder extends User {
 }
 
 class Rating {
-  private builder: Builder;
-  private build: Build;
-  private liked: boolean;
-  private disliked: boolean;
-  private comment: string;
+  public builder: Builder;
+  public build: Build;
+  public liked: boolean;
+  public disliked: boolean;
+  public comment: string;
 
   public constructor(
     builder: Builder,
@@ -399,7 +426,7 @@ class Rating {
 }
 
 class Inventory {
-  private items: Array<InventoryItem>;
+  public items: Array<InventoryItem>;
 
   public constructor(items: Array<InventoryItem>) {
     this.items = items;
@@ -407,8 +434,8 @@ class Inventory {
 }
 
 class InventoryItem {
-  private component: Component;
-  private stock: number;
+  public component: Component;
+  public stock: number;
 
   public constructor(component: Component, stock: number) {
     this.component = component;
@@ -416,14 +443,14 @@ class InventoryItem {
   }
 }
 
-class SpellChecker {}
+abstract class SpellChecker {}
 
-class BuildGenerator {}
+abstract class BuildGenerator {}
 
-class BuildingMode {}
+abstract class BuildingMode {}
 
 class BeginnerMode extends BuildingMode {
-  private questions: Array<Question>;
+  public questions: Array<Question>;
 
   public constructor(questions: Array<Question>) {
     super();
@@ -432,8 +459,8 @@ class BeginnerMode extends BuildingMode {
 }
 
 class Question {
-  private question: string;
-  private choices: Array<string>;
+  public question: string;
+  public choices: Array<string>;
 
   public constructor(question: string, choices: Array<string>) {
     this.question = question;
@@ -442,8 +469,8 @@ class Question {
 }
 
 class AnsweredQuestion {
-  private question: Question;
-  private selected!: number;
+  public question: Question;
+  public selected!: number;
 
   public constructor(question: Question, selected: number) {
     this.question = question;
