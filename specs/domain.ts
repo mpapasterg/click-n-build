@@ -356,16 +356,16 @@ class BillingInformation {
 }
 
 class Purchase {
-  public builds: Array<Build>;
+  public build: Build;
   public billing_information: BillingInformation;
   public price: number;
 
   public constructor(
-    builds: Array<Build>,
+    build: Build,
     billing_information: BillingInformation,
     price: number
   ) {
-    this.builds = builds;
+    this.build = build;
     this.billing_information = billing_information;
     this.price = price;
   }
