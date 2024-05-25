@@ -1,4 +1,4 @@
-abstract class Component {
+export abstract class Component {
   public id: number;
   public name: string;
   public price: number;
@@ -23,9 +23,9 @@ abstract class Component {
   }
 }
 
-abstract class BasicComponent extends Component {}
+export abstract class BasicComponent extends Component {}
 
-class CPU extends BasicComponent {
+export class CPU extends BasicComponent {
   public architecture: string;
   public cores: number;
   public threads: number;
@@ -57,7 +57,7 @@ class CPU extends BasicComponent {
   }
 }
 
-class GPU extends BasicComponent {
+export class GPU extends BasicComponent {
   public architecture: string;
   public base_clock: number;
   public oc_clock: number;
@@ -89,7 +89,7 @@ class GPU extends BasicComponent {
   }
 }
 
-class RAM extends BasicComponent {
+export class RAM extends BasicComponent {
   public type: string;
   public modules: number;
   public size: number;
@@ -121,9 +121,9 @@ class RAM extends BasicComponent {
   }
 }
 
-abstract class DependentComponent extends Component {}
+export abstract class DependentComponent extends Component {}
 
-class CoolingSystem extends DependentComponent {
+export class CoolingSystem extends DependentComponent {
   public type: string;
   public active_cooling: boolean;
 
@@ -144,7 +144,7 @@ class CoolingSystem extends DependentComponent {
   }
 }
 
-class Decoration extends DependentComponent {
+export class Decoration extends DependentComponent {
   public type: string;
 
   public constructor(
@@ -161,7 +161,7 @@ class Decoration extends DependentComponent {
   }
 }
 
-class Motherboard extends DependentComponent {
+export class Motherboard extends DependentComponent {
   public size_type: string;
   public socket: string;
   public chipset: string;
@@ -196,7 +196,7 @@ class Motherboard extends DependentComponent {
   }
 }
 
-class PSU extends DependentComponent {
+export class PSU extends DependentComponent {
   public size_type: string;
   public max_wattage: number;
   public certification: string;
@@ -222,7 +222,7 @@ class PSU extends DependentComponent {
   }
 }
 
-class Case extends DependentComponent {
+export class Case extends DependentComponent {
   public type: string;
   public motherboard_types_supported: Array<string>;
   public skin: string;
@@ -248,7 +248,7 @@ class Case extends DependentComponent {
   }
 }
 
-class Drive extends DependentComponent {
+export class Drive extends DependentComponent {
   public storage_type: string;
   public size: number;
   public read_speed: number;
@@ -277,7 +277,7 @@ class Drive extends DependentComponent {
   }
 }
 
-class Build {
+export class Build {
   public id: number;
   public gpu: GPU;
   public cpu: CPU;
@@ -314,7 +314,7 @@ class Build {
   }
 }
 
-class Library {
+export class Library {
   public builds: Array<Build>;
 
   public constructor(builds: Array<Build>) {
@@ -322,7 +322,7 @@ class Library {
   }
 }
 
-class WallOfBuilds {
+export class WallOfBuilds {
   public builds: Array<Build>;
 
   public constructor(builds: Array<Build>) {
@@ -330,7 +330,7 @@ class WallOfBuilds {
   }
 }
 
-class BillingInformation {
+export class BillingInformation {
   public name: string;
   public surname: string;
   public address: string;
@@ -355,7 +355,7 @@ class BillingInformation {
   }
 }
 
-class Purchase {
+export class Purchase {
   public build: Build;
   public billing_information: BillingInformation;
   public price: number;
@@ -371,13 +371,13 @@ class Purchase {
   }
 }
 
-abstract class User {
+export abstract class User {
   public constructor() {}
 }
 
-class Guest extends User {}
+export class Guest extends User {}
 
-class Builder extends User {
+export class Builder extends User {
   public id: number;
   public username: string;
   public email: string;
@@ -403,7 +403,7 @@ class Builder extends User {
   }
 }
 
-class Rating {
+export class Rating {
   public builder: Builder;
   public build: Build;
   public liked: boolean;
@@ -425,7 +425,7 @@ class Rating {
   }
 }
 
-class Inventory {
+export class Inventory {
   public items: Array<InventoryItem>;
 
   public constructor(items: Array<InventoryItem>) {
@@ -433,23 +433,23 @@ class Inventory {
   }
 }
 
-class InventoryItem {
-  public component: Component;
+export class InventoryItem {
+  public component_name: string;
   public stock: number;
 
-  public constructor(component: Component, stock: number) {
-    this.component = component;
+  public constructor(component_name: string, stock: number) {
+    this.component_name = component_name;
     this.stock = stock;
   }
 }
 
-abstract class SpellChecker {}
+export abstract class SpellChecker {}
 
-abstract class BuildGenerator {}
+export abstract class BuildGenerator {}
 
-abstract class BuildingMode {}
+export abstract class BuildingMode {}
 
-class BeginnerMode extends BuildingMode {
+export class BeginnerMode extends BuildingMode {
   public questions: Array<Question>;
 
   public constructor(questions: Array<Question>) {
@@ -458,7 +458,7 @@ class BeginnerMode extends BuildingMode {
   }
 }
 
-class Question {
+export class Question {
   public question: string;
   public choices: Array<string>;
 
@@ -468,7 +468,7 @@ class Question {
   }
 }
 
-class AnsweredQuestion {
+export class AnsweredQuestion {
   public question: Question;
   public selected!: number;
 
@@ -482,6 +482,6 @@ class AnsweredQuestion {
   }
 }
 
-class NormalMode extends BuildingMode {}
+export class NormalMode extends BuildingMode {}
 
-class ExpertMode extends BuildingMode {}
+export class ExpertMode extends BuildingMode {}

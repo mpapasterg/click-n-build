@@ -4,6 +4,7 @@
   "private": true,
   "type": "module",
   "scripts": {
+    "start": "nuxt build && docker compose up",
     "build": "nuxt build",
     "test": "vitest",
     "dev": "nuxt dev",

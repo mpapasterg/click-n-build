@@ -2,7 +2,7 @@
 
 FROM node:20.5.1-bookworm as base
 
-ARG PORT=3000
+ARG PORT=8000
 
 ENV NODE_ENV=production
 

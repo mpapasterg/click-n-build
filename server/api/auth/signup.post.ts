@@ -1,4 +1,5 @@
 import mongoose from "mongoose";
+import { Builder } from "~/specs/domain";
 
 export default defineEventHandler(async (event) => {
   // Extract credentials from form data

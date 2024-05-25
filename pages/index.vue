@@ -156,6 +156,8 @@ const authStore = useAuthStore();
           Welcome PC Builder
         </div>
         <div class="row justify-center q-pa-md" style="font-size: 1.25rem">
+<<<<<<< Updated upstream
+<<<<<<< Updated upstream
           Welcome to "Click n' Build", the place where your dream PC is just a click away!
 
 At "Click n' Build", we understand that building your own PC can be an exciting yet daunting task. That's why we're here to guide you every step of the way, ensuring a seamless and enjoyable experience.
@@ -167,6 +169,32 @@ Navigate through our user-friendly interface to select from a vast array of high
 But the journey doesn't end there. Before finalizing your order, take advantage of our unique offer: publish your build on our page and social media channels to receive a discount equivalent to the cost of shipping. It's our way of saying thank you for being a part of our community.
 
 Join us at "Click n' Build" and let's turn your PC-building dreams into reality.
+=======
+=======
+>>>>>>> Stashed changes
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis vitae
+          malesuada justo. Ut tempor sagittis augue sed egestas. Cras id
+          lobortis nunc. Quisque mi enim, venenatis eu turpis nec, vestibulum
+          vulputate nulla. Vivamus placerat sem in consequat interdum. Maecenas
+          commodo, ex in ullamcorper sodales, dolor turpis lobortis metus,
+          sollicitudin ornare leo turpis vel nulla. Quisque sodales condimentum
+          urna vel pellentesque. Curabitur sed hendrerit erat. Mauris orci ante,
+          placerat ac ligula eu, volutpat feugiat ex. Sed pretium libero nisl,
+          sit amet sagittis nulla vehicula eget. Nunc sed nulla nulla. Nulla
+          semper in tellus gravida imperdiet. Sed efficitur ex et nisl pretium
+          luctus. Sed dui turpis, vulputate non commodo blandit, interdum ac
+          odio. Pellentesque bibendum a nibh eget commodo. Fusce iaculis
+          ullamcorper mollis. Morbi libero leo, tincidunt id iaculis sed,
+          imperdiet nec ante. Duis quis metus sollicitudin, cursus nibh non,
+          maximus velit. Sed nec ipsum nec nulla placerat rhoncus ut quis nunc.
+          Sed eu quam iaculis, aliquam nulla sed, blandit dolor. Quisque
+          lobortis non tortor non accumsan. Nam in ante lorem. Aenean ex est,
+          condimentum ut lobortis at, facilisis imperdiet ex. Mauris gravida
+          tempus leo, vel dignissim justo hendrerit in.
+<<<<<<< Updated upstream
+>>>>>>> Stashed changes
+=======
+>>>>>>> Stashed changes
         </div>
         <div class="row q-pa-md vertical-bottom">
           <div class="col">

@@ -1,4 +1,23 @@
 import mongoose from "mongoose";
+import {
+  CPU,
+  GPU,
+  RAM,
+  CoolingSystem,
+  Decoration,
+  Motherboard,
+  PSU,
+  Case,
+  Drive,
+  Build,
+  Library,
+  BillingInformation,
+  Purchase,
+  Builder,
+  Rating,
+  InventoryItem,
+  Question,
+} from "./domain";
 const { Schema, model } = mongoose;
 
 // Mongoose Database Schemas
@@ -268,12 +287,7 @@ const RatingSchema = new Schema<Rating>({
 });
 
 const InventoryItemSchema = new Schema<InventoryItem>({
-  component: {
-    type: Schema.ObjectId,
-    ref: Component.name,
-    required: true,
-    unique: true,
-  },
+  component_name: { type: String, required: true, unique: true },
   stock: {
     type: Number,
     required: true,

@@ -4,8 +4,13 @@
 import { type JWTPayload, jwtVerify } from "jose";
 
 export default defineEventHandler(async (event) => {
+  // Skip client routes from checks
+  if (!getRequestURL(event).pathname.startsWith("/api")) {
+    return;
+  }
+
   // Skip auth routes from checks
-  if (getRequestURL(event).pathname.startsWith("/auth")) {
+  if (getRequestURL(event).pathname.startsWith("/api/auth")) {
     return;
   }
 

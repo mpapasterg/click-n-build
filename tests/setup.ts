@@ -1,8 +1,6 @@
 import { beforeAll, afterAll, afterEach } from "vitest";
 import { setupServer, SetupServerApi } from "msw/node";
 
-import { handlers as authHandlers } from "../mocks/api/auth";
-
 // Define node API server mock
 const server: SetupServerApi = setupServer();
 

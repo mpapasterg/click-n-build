@@ -18,10 +18,10 @@ logs
 .fleet
 .idea
 
-# Local env files
-.env
-.env.*
-!.env.example
+# Local env files (disabled for dev)
+# .env
+# .env.*
+# !.env.example
 
 # Editor related
 .vscode/

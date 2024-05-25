@@ -8,7 +8,6 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
-      MONGO_INITDB_DATABASE: click-n-build
     volumes:
       - ./db/data:/data/db:rw
       - ./db/logs:/var/log/mongodb
@@ -39,7 +38,7 @@ services:
       - "8000:8000"
     depends_on:
       - mongodb
-  web:
+  nginx:
     image: nginx:latest
     hostname: clicknbuild.com
     container_name: click-n-build-web-service

@@ -6,9 +6,9 @@ print("===== DATABASE INIT =====");
 // Create Production Database
 
 db = db.getSiblingDB("click-n-build-prod");
-db.createCollection("users");
+db.createCollection("Builder");
 
 // Create Development Database
 
 db = db.getSiblingDB("click-n-build-dev");
-db.createCollection("users");
+db.createCollection("Builder");

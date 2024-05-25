@@ -1,4 +1,5 @@
 import { SignJWT } from "jose";
+import { Builder } from "~/specs/domain";
 
 export default defineEventHandler(async (event) => {
   // Extract credentials from form data
@@ -30,7 +31,7 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check credentials validity
-  if (user.password === password) {
+  if (user.password !== password) {
     throw createError({
       statusCode: sanitizeStatusCode(401),
       statusMessage: sanitizeStatusMessage("Unauthorized"),
