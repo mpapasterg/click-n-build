@@ -100,8 +100,8 @@ const onSubmit = async () => {
             hide-hint
             clearable
             clear-icon="fa-solid fa-close"
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="grey-4"
             filled>
             <template #prepend>
               <q-icon name="fa-solid fa-user" />
@@ -118,8 +118,8 @@ const onSubmit = async () => {
             :rules="formEmailRules"
             clearable
             clear-icon="fa-solid fa-close"
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="grey-4"
             filled>
             <template #prepend>
               <q-icon name="fa-solid fa-at" />
@@ -139,8 +139,8 @@ const onSubmit = async () => {
             clear-icon="fa-solid fa-close"
             hint="At least 8 characters long with 1 uppercase letter, 1 digit and 1 symbol (#$&@*)."
             hide-hint
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="grey-4"
             counter
             filled>
             <template #prepend>
@@ -165,8 +165,8 @@ const onSubmit = async () => {
             :rules="formPasswordRepeatRules"
             clearable
             clear-icon="fa-solid fa-close"
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="grey-4"
             counter
             filled>
             <template #prepend>

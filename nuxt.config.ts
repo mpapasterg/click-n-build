@@ -43,7 +43,7 @@ export default defineNuxtConfig({
       animations: "all",
     },
     config: {
-      dark: "auto",
+      dark: false,
       brand: {
         primary: "#0b3954",
         secondary: "#5a7e8f",
@@ -99,4 +99,5 @@ export default defineNuxtConfig({
       dirs: ["specs/**"],
     },
   },
+  ignore: ["db/**"],
 });

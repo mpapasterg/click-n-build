@@ -24,9 +24,13 @@ export abstract class Component {
 
   public queryComponents(
     attributes: Map<string, string | number>
-  ): Array<Component> {} // TODO:
+  ): Array<Component> {
+    return [];
+  } // TODO:
 
-  public getComponents(): Array<Component> {} // TODO:
+  public getComponents(): Array<Component> {
+    return [];
+  } // TODO:
 }
 
 export abstract class BasicComponent extends Component {}
@@ -334,9 +338,13 @@ export class Build {
 
   public static generateCandidateBuilds(
     answeredQuestions: Array<AnsweredQuestion>
-  ): Array<Build> {} // TODO:
+  ): Array<Build> {
+    return [];
+  } // TODO:
 
-  public constraintsMet(): boolean {} // TODO:
+  public constraintsMet(): boolean {
+    return false;
+  } // TODO:
 
   public uploadComment(comment: string): void {} // TODO:
 
@@ -354,7 +362,9 @@ export class Library {
     this.builds = builds;
   }
 
-  public inLibrary(buildName: string): boolean {} // TODO:
+  public inLibrary(buildName: string): boolean {
+    return false;
+  } // TODO:
 }
 
 export class WallOfBuilds {
@@ -364,7 +374,9 @@ export class WallOfBuilds {
     this.builds = builds;
   }
 
-  public showBuilds(): Array<Build> {} // TODO:
+  public showBuilds(): Array<Build> {
+    return [];
+  } // TODO:
 
   public postBuild(build: Build): void {} // TODO:
 }
@@ -393,7 +405,9 @@ export class BillingInformation {
     this.country = country;
   }
 
-  public isValid(): boolean {} // TODO:
+  public isValid(): boolean {
+    return false;
+  } // TODO:
 }
 
 export class Purchase {
@@ -462,7 +476,9 @@ export class UserStatus {
     this.email = undefined;
   }
 
-  public isLoggedIn(): boolean {} // TODO:
+  public isLoggedIn(): boolean {
+    return false;
+  } // TODO:
 }
 
 export class Rating {

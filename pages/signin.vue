@@ -86,8 +86,8 @@ const onSubmit = async () => {
             :rules="formEmailRules"
             clearable
             clear-icon="fa-solid fa-close"
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="white"
             filled>
             <template #prepend>
               <q-icon name="fa-solid fa-at" />
@@ -103,8 +103,8 @@ const onSubmit = async () => {
             v-model="formPassword"
             clearable
             clear-icon="fa-solid fa-close"
-            color="white"
-            bg-color="secondary"
+            color="black"
+            bg-color="grey-4"
             filled>
             <template #prepend>
               <q-icon name="fa-solid fa-key" />
