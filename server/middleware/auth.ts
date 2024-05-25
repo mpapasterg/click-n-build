@@ -1,7 +1,7 @@
 // A middleware extends, protects or modifies the event at hand
 // Returning anything from a middleware will return that response and not execute event handlers for the specific request (not recommended)
 
-import { JWTPayload, jwtVerify } from "jose";
+import { type JWTPayload, jwtVerify } from "jose";
 
 export default defineEventHandler(async (event) => {
   // Skip auth routes from checks
@@ -23,9 +23,15 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check if access token is valid
+  console.log(process.env.JWT_SECRET);
   let payload: JWTPayload | undefined;
   try {
-    payload = (await jwtVerify(accessToken, mockSecret)).payload;
+    payload = (
+      await jwtVerify(
+        accessToken,
+        new TextEncoder().encode(process.env.JWT_SECRET)
+      )
+    ).payload;
   } catch (error) {
     throw createError({
       statusCode: sanitizeStatusCode(401),

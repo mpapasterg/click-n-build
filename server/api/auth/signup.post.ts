@@ -1,3 +1,5 @@
+import mongoose from "mongoose";
+
 export default defineEventHandler(async (event) => {
   // Extract credentials from form data
   const credentials: FormData = await readFormData(event);
@@ -33,7 +35,8 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check if user with given email exists
-  if (email === mockEmail) {
+  const user: Builder | null = await BuilderModel.findOne({ email: email });
+  if (user !== null) {
     throw createError({
       statusCode: sanitizeStatusCode(409),
       statusMessage: sanitizeStatusMessage("Conflict"),
@@ -43,6 +46,15 @@ export default defineEventHandler(async (event) => {
     });
   }
 
+  // Create new user with given credentials
+  const newUser = await BuilderModel.create({
+    email,
+    username,
+    password,
+  });
+  newUser.save();
+
+  // Return with auth information
   const auth: Auth = {
     email,
     username,

@@ -8,6 +8,7 @@ services:
     environment:
       MONGO_INITDB_ROOT_USERNAME: root
       MONGO_INITDB_ROOT_PASSWORD: root
+      MONGO_INITDB_DATABASE: click-n-build
     volumes:
       - ./db/data:/data/db:rw
       - ./db/logs:/var/log/mongodb
