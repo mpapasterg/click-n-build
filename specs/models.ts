@@ -141,6 +141,11 @@ const BuildSchema = new Schema<
     wall_of_builds: typeof Schema.ObjectId;
   }
 >({
+  name: {
+    type: String,
+    required: true,
+    unique: true,
+  },
   cpu: {
     type: Schema.ObjectId,
     ref: CPU.name,

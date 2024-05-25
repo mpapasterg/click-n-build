@@ -2,17 +2,17 @@ export abstract class Component {
   public id: number;
   public name: string;
   public price: number;
-  public image: string;
-  public description: string;
-  public manufacturer: string;
+  public image: string | undefined;
+  public description: string | undefined;
+  public manufacturer: string | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined
   ) {
     this.id = id;
     this.name = name;
@@ -21,31 +21,37 @@ export abstract class Component {
     this.description = description;
     this.manufacturer = manufacturer;
   }
+
+  public queryComponents(
+    attributes: Map<string, string | number>
+  ): Array<Component> {} // TODO:
+
+  public getComponents(): Array<Component> {} // TODO:
 }
 
 export abstract class BasicComponent extends Component {}
 
 export class CPU extends BasicComponent {
-  public architecture: string;
-  public cores: number;
-  public threads: number;
-  public base_clock: number;
-  public oc_clock: number;
-  public caches: Array<string>;
+  public architecture: string | undefined;
+  public cores: number | undefined;
+  public threads: number | undefined;
+  public base_clock: number | undefined;
+  public oc_clock: number | undefined;
+  public caches: Array<string> | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    architecture: string,
-    cores: number,
-    threads: number,
-    base_clock: number,
-    oc_clock: number,
-    caches: Array<string>
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    architecture: string | undefined,
+    cores: number | undefined,
+    threads: number | undefined,
+    base_clock: number | undefined,
+    oc_clock: number | undefined,
+    caches: Array<string> | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.architecture = architecture;
@@ -58,26 +64,26 @@ export class CPU extends BasicComponent {
 }
 
 export class GPU extends BasicComponent {
-  public architecture: string;
-  public base_clock: number;
-  public oc_clock: number;
-  public vram_type: string;
-  public vram_size: number;
-  public pcie_type: string;
+  public architecture: string | undefined;
+  public base_clock: number | undefined;
+  public oc_clock: number | undefined;
+  public vram_type: string | undefined;
+  public vram_size: number | undefined;
+  public pcie_type: string | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    architecture: string,
-    base_clock: number,
-    oc_clock: number,
-    vram_type: string,
-    vram_size: number,
-    pcie_type: string
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    architecture: string | undefined,
+    base_clock: number | undefined,
+    oc_clock: number | undefined,
+    vram_type: string | undefined,
+    vram_size: number | undefined,
+    pcie_type: string | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.architecture = architecture;
@@ -90,26 +96,26 @@ export class GPU extends BasicComponent {
 }
 
 export class RAM extends BasicComponent {
-  public type: string;
-  public modules: number;
-  public size: number;
-  public clock_speed: number;
-  public cas_latency: number;
-  public rgb_lighting: boolean;
+  public type: string | undefined;
+  public modules: number | undefined;
+  public size: number | undefined;
+  public clock_speed: number | undefined;
+  public cas_latency: number | undefined;
+  public rgb_lighting: boolean | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    type: string,
-    modules: number,
-    size: number,
-    clock_speed: number,
-    cas_latency: number,
-    rgb_lighting: boolean
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    type: string | undefined,
+    modules: number | undefined,
+    size: number | undefined,
+    clock_speed: number | undefined,
+    cas_latency: number | undefined,
+    rgb_lighting: boolean | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
@@ -121,19 +127,29 @@ export class RAM extends BasicComponent {
   }
 }
 
-export abstract class DependentComponent extends Component {}
+export abstract class DependentComponent extends Component {
+  private selectedCPU: CPU | undefined;
+  private selectedGPU: GPU | undefined;
+  private selectedRAM: RAM | undefined;
+
+  public selectedBasicComponents(cpu: CPU, gpu: GPU, ram: RAM): void {
+    this.selectedCPU = cpu;
+    this.selectedGPU = gpu;
+    this.selectedRAM = ram;
+  }
+}
 
 export class CoolingSystem extends DependentComponent {
-  public type: string;
-  public active_cooling: boolean;
+  public type: string | undefined;
+  public active_cooling: boolean | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
 
     type: string,
     active_cooling: boolean
@@ -145,15 +161,15 @@ export class CoolingSystem extends DependentComponent {
 }
 
 export class Decoration extends DependentComponent {
-  public type: string;
+  public type: string | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
     type: string
   ) {
     super(id, name, price, image, description, manufacturer);
@@ -162,28 +178,28 @@ export class Decoration extends DependentComponent {
 }
 
 export class Motherboard extends DependentComponent {
-  public size_type: string;
-  public socket: string;
-  public chipset: string;
-  public memory_channels: Array<string>;
-  public pcie_slots: Array<string>;
-  public external_io: Array<string>;
-  public rgb_lighting: boolean;
+  public size_type: string | undefined;
+  public socket: string | undefined;
+  public chipset: string | undefined;
+  public memory_channels: Array<string> | undefined;
+  public pcie_slots: Array<string> | undefined;
+  public external_io: Array<string> | undefined;
+  public rgb_lighting: boolean | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    size_type: string,
-    socket: string,
-    chipset: string,
-    memory_channels: Array<string>,
-    pcie_slots: Array<string>,
-    external_io: Array<string>,
-    rgb_lighting: boolean
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    size_type: string | undefined,
+    socket: string | undefined,
+    chipset: string | undefined,
+    memory_channels: Array<string> | undefined,
+    pcie_slots: Array<string> | undefined,
+    external_io: Array<string> | undefined,
+    rgb_lighting: boolean | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.size_type = size_type;
@@ -197,22 +213,22 @@ export class Motherboard extends DependentComponent {
 }
 
 export class PSU extends DependentComponent {
-  public size_type: string;
-  public max_wattage: number;
-  public certification: string;
-  public modularity_type: string;
+  public size_type: string | undefined;
+  public max_wattage: number | undefined;
+  public certification: string | undefined;
+  public modularity_type: string | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    size_type: string,
-    max_wattage: number,
-    certification: string,
-    modularity_type: string
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    size_type: string | undefined,
+    max_wattage: number | undefined,
+    certification: string | undefined,
+    modularity_type: string | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.size_type = size_type;
@@ -223,22 +239,22 @@ export class PSU extends DependentComponent {
 }
 
 export class Case extends DependentComponent {
-  public type: string;
-  public motherboard_types_supported: Array<string>;
-  public skin: string;
-  public features: Array<string>;
+  public type: string | undefined;
+  public motherboard_types_supported: Array<string> | undefined;
+  public skin: string | undefined;
+  public features: Array<string> | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    type: string,
-    motherboard_types_supported: Array<string>,
-    skin: string,
-    features: Array<string>
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    type: string | undefined,
+    motherboard_types_supported: Array<string> | undefined,
+    skin: string | undefined,
+    features: Array<string> | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
@@ -249,24 +265,24 @@ export class Case extends DependentComponent {
 }
 
 export class Drive extends DependentComponent {
-  public storage_type: string;
-  public size: number;
-  public read_speed: number;
-  public write_speed: number;
-  public buffer_size: number;
+  public storage_type: string | undefined;
+  public size: number | undefined;
+  public read_speed: number | undefined;
+  public write_speed: number | undefined;
+  public buffer_size: number | undefined;
 
   public constructor(
     id: number,
     name: string,
     price: number,
-    image: string,
-    description: string,
-    manufacturer: string,
-    storage_type: string,
-    size: number,
-    read_speed: number,
-    write_speed: number,
-    buffer_size: number
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    storage_type: string | undefined,
+    size: number | undefined,
+    read_speed: number | undefined,
+    write_speed: number | undefined,
+    buffer_size: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.storage_type = storage_type;
@@ -279,6 +295,7 @@ export class Drive extends DependentComponent {
 
 export class Build {
   public id: number;
+  public name: string;
   public gpu: GPU;
   public cpu: CPU;
   public ram: RAM;
@@ -291,6 +308,7 @@ export class Build {
 
   public constructor(
     id: number,
+    name: string,
     gpu: GPU,
     cpu: CPU,
     ram: RAM,
@@ -302,6 +320,7 @@ export class Build {
     drive: Drive
   ) {
     this.id = id;
+    this.name = name;
     this.gpu = gpu;
     this.cpu = cpu;
     this.ram = ram;
@@ -312,6 +331,20 @@ export class Build {
     this.pc_case = pc_case;
     this.drive = drive;
   }
+
+  public static generateCandidateBuilds(
+    answeredQuestions: Array<AnsweredQuestion>
+  ): Array<Build> {} // TODO:
+
+  public constraintsMet(): boolean {} // TODO:
+
+  public uploadComment(comment: string): void {} // TODO:
+
+  public increaseLikes(): void {} // TODO:
+
+  public increaseDislikes(): void {} // TODO:
+
+  public saveBuild(): void {} // TODO:
 }
 
 export class Library {
@@ -320,6 +353,8 @@ export class Library {
   public constructor(builds: Array<Build>) {
     this.builds = builds;
   }
+
+  public inLibrary(buildName: string): boolean {} // TODO:
 }
 
 export class WallOfBuilds {
@@ -328,6 +363,10 @@ export class WallOfBuilds {
   public constructor(builds: Array<Build>) {
     this.builds = builds;
   }
+
+  public showBuilds(): Array<Build> {} // TODO:
+
+  public postBuild(build: Build): void {} // TODO:
 }
 
 export class BillingInformation {
@@ -353,6 +392,8 @@ export class BillingInformation {
     this.city = city;
     this.country = country;
   }
+
+  public isValid(): boolean {} // TODO:
 }
 
 export class Purchase {
@@ -369,6 +410,8 @@ export class Purchase {
     this.billing_information = billing_information;
     this.price = price;
   }
+
+  public placeOrder(): void {} // TODO:
 }
 
 export abstract class User {
@@ -382,16 +425,16 @@ export class Builder extends User {
   public username: string;
   public email: string;
   public password: string;
-  public billing_information: BillingInformation;
-  public library: Library;
+  public billing_information: BillingInformation | undefined;
+  public library: Library | undefined;
 
   public constructor(
     id: number,
     username: string,
     email: string,
     password: string,
-    billing_information: BillingInformation,
-    library: Library
+    billing_information: BillingInformation | undefined,
+    library: Library | undefined
   ) {
     super();
     this.id = id;
@@ -403,19 +446,38 @@ export class Builder extends User {
   }
 }
 
+export class UserStatus {
+  public username: string | undefined;
+  public email: string | undefined;
+
+  public constructor() {}
+
+  public logIn(username: string, email: string): void {
+    this.username = username;
+    this.email = email;
+  }
+
+  public logOut(): void {
+    this.username = undefined;
+    this.email = undefined;
+  }
+
+  public isLoggedIn(): boolean {} // TODO:
+}
+
 export class Rating {
   public builder: Builder;
   public build: Build;
   public liked: boolean;
   public disliked: boolean;
-  public comment: string;
+  public comment: string | undefined;
 
   public constructor(
     builder: Builder,
     build: Build,
     liked: boolean,
     disliked: boolean,
-    comment: string
+    comment: string | undefined
   ) {
     this.builder = builder;
     this.build = build;
@@ -423,6 +485,12 @@ export class Rating {
     this.disliked = disliked;
     this.comment = comment;
   }
+
+  public updateRating(
+    comment: string | undefined,
+    liked: boolean | undefined,
+    disliked: boolean | undefined
+  ) {} // TODO:
 }
 
 export class Inventory {
