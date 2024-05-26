@@ -22,13 +22,14 @@ export abstract class Component {
     this.manufacturer = manufacturer;
   }
 
-  public queryComponents(
+  public static queryComponents(
+    componentType: string,
     attributes: Map<string, string | number>
   ): Array<Component> {
     return [];
   } // TODO:
 
-  public getComponents(): Array<Component> {
+  public static getComponents(componentType: string): Array<Component> {
     return [];
   } // TODO:
 }
@@ -37,11 +38,13 @@ export abstract class BasicComponent extends Component {}
 
 export class CPU extends BasicComponent {
   public architecture: string | undefined;
+  public socket: string | undefined;
   public cores: number | undefined;
   public threads: number | undefined;
   public base_clock: number | undefined;
   public oc_clock: number | undefined;
   public caches: Array<string> | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -51,19 +54,23 @@ export class CPU extends BasicComponent {
     description: string | undefined,
     manufacturer: string | undefined,
     architecture: string | undefined,
+    socket: string | undefined,
     cores: number | undefined,
     threads: number | undefined,
     base_clock: number | undefined,
     oc_clock: number | undefined,
-    caches: Array<string> | undefined
+    caches: Array<string> | undefined,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.architecture = architecture;
+    this.socket = socket;
     this.cores = cores;
     this.threads = threads;
     this.base_clock = base_clock;
     this.oc_clock = oc_clock;
     this.caches = caches;
+    this.watt_consumption = watt_consumption;
   }
 }
 
@@ -409,8 +416,32 @@ export class BillingInformation {
   }
 
   public isValid(): boolean {
-    return false;
-  } // TODO:
+    // Check street number
+    const streetNumber = +this.address.split(" ")[1];
+    if (streetNumber === Number.NaN || !Number.isInteger(streetNumber)) {
+      return false;
+    }
+
+    // Check postal code
+    if (
+      this.postal_code.toString().length != 5 ||
+      !Number.isInteger(this.postal_code)
+    ) {
+      return false;
+    }
+
+    // Check city
+    if (!(this.city in ["Athens", "Thessaloniki", "Patras"])) {
+      return false;
+    }
+
+    // Check country
+    if (this.country !== "Greece") {
+      return false;
+    }
+
+    return true;
+  }
 }
 
 export class Purchase {
@@ -469,6 +500,10 @@ export class UserStatus {
 
   public constructor() {}
 
+  public isLoggedIn(): boolean {
+    return false;
+  } // TODO:
+
   public logIn(username: string, email: string): void {
     this.username = username;
     this.email = email;
@@ -478,10 +513,6 @@ export class UserStatus {
     this.username = undefined;
     this.email = undefined;
   }
-
-  public isLoggedIn(): boolean {
-    return false;
-  } // TODO:
 }
 
 export class Rating {
@@ -567,6 +598,9 @@ export class AnsweredQuestion {
   }
 
   public changeSelection(selected: number) {
+    if (selected > this.question.choices.length) {
+      throw new Error("Invalid selection");
+    }
     this.selected = selected;
   }
 }
