@@ -34,6 +34,7 @@ const CPUSchema = new Schema<CPU>({
   base_clock: Number,
   oc_clock: Number,
   caches: [String],
+  watt_consumption: Number,
 });
 
 const GPUSchema = new Schema<GPU>({
@@ -48,6 +49,7 @@ const GPUSchema = new Schema<GPU>({
   vram_type: String,
   vram_size: Number,
   pcie_type: String,
+  watt_consumption: Number,
 });
 
 const RAMSchema = new Schema<RAM>({
@@ -62,6 +64,21 @@ const RAMSchema = new Schema<RAM>({
   clock_speed: Number,
   cas_latency: Number,
   rgb_lighting: Boolean,
+  watt_consumption: Number,
+});
+
+const DriveSchema = new Schema<Drive>({
+  name: { type: String, unique: true, required: true },
+  price: { type: Number, required: true },
+  image: String,
+  description: String,
+  manufacturer: String,
+  storage_type: String,
+  size: Number,
+  read_speed: Number,
+  write_speed: Number,
+  buffer_size: Number,
+  watt_consumption: Number,
 });
 
 const CoolingSystemSchema = new Schema<CoolingSystem>({
@@ -72,6 +89,7 @@ const CoolingSystemSchema = new Schema<CoolingSystem>({
   manufacturer: String,
   type: String,
   active_cooling: Boolean,
+  watt_consumption: Number,
 });
 
 const DecorationSchema = new Schema<Decoration>({
@@ -81,6 +99,7 @@ const DecorationSchema = new Schema<Decoration>({
   description: String,
   manufacturer: String,
   type: String,
+  watt_consumption: Number,
 });
 
 const MotherboardSchema = new Schema<Motherboard>({
@@ -96,6 +115,9 @@ const MotherboardSchema = new Schema<Motherboard>({
   pcie_slots: [String],
   external_io: [String],
   rgb_lighting: Boolean,
+  watt_consumption: Number,
+  ram_type: String,
+  nvme_slots: Number,
 });
 
 const PSUSchema = new Schema<PSU>({
@@ -120,19 +142,7 @@ const CaseSchema = new Schema<Case>({
   motherboard_types_supported: [String],
   skin: String,
   features: [String],
-});
-
-const DriveSchema = new Schema<Drive>({
-  name: { type: String, unique: true, required: true },
-  price: { type: Number, required: true },
-  image: String,
-  description: String,
-  manufacturer: String,
-  storage_type: String,
-  size: Number,
-  read_speed: Number,
-  write_speed: Number,
-  buffer_size: Number,
+  watt_consumption: Number,
 });
 
 const BuildSchema = new Schema<

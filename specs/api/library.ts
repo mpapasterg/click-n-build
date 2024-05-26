@@ -5,6 +5,20 @@ import { Schemas } from "../global";
 
 // GET /api/library/[id]
 
+export const LibraryGetURL: string = "/api/library/[id]";
+export const LibraryGetRequestSchema = ClientRequestSchema;
+export const LibraryGetResponseSchema = ServerResponseSchema.extend({
+  builds: BuildSchema.array(),
+});
+Schemas[LibraryGetURL] = {
+  request: LibraryGetRequestSchema,
+  response: LibraryGetResponseSchema,
+};
+
 // Global Schema Types Declaration
 
-declare global {}
+declare global {
+  // GET /api/library/[id]
+  type LibraryGetRequest = z.infer<typeof LibraryGetRequestSchema>;
+  type LibraryGetResponse = z.infer<typeof LibraryGetResponseSchema>;
+}
