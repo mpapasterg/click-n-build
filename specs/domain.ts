@@ -382,6 +382,7 @@ export class WallOfBuilds {
 }
 
 export class BillingInformation {
+  public id: number;
   public name: string;
   public surname: string;
   public address: string;
@@ -390,6 +391,7 @@ export class BillingInformation {
   public country: string;
 
   public constructor(
+    id: number,
     name: string,
     surname: string,
     address: string,
@@ -397,6 +399,7 @@ export class BillingInformation {
     city: string,
     country: string
   ) {
+    this.id = id;
     this.name = name;
     this.surname = surname;
     this.address = address;
@@ -527,9 +530,11 @@ export class InventoryItem {
   }
 }
 
-export abstract class SpellChecker {}
-
-export abstract class BuildGenerator {}
+export abstract class SpellChecker {
+  public static spellCheck(comment: string): boolean {
+    return false;
+  } // TODO:
+}
 
 export abstract class BuildingMode {}
 

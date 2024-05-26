@@ -78,8 +78,6 @@ Schemas[SignOutPostURL] = {
   response: SignOutPostResponseSchema,
 };
 
-// Add to API schemas
-
 // Global Schema Types Declaration
 
 declare global {
