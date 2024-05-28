@@ -180,18 +180,11 @@ export abstract class DependentComponent extends Component {
   private selectedCPU: CPU | undefined;
   private selectedGPU: GPU | undefined;
   private selectedRAM: RAM | undefined;
-  private selectedDrive: Drive | undefined;
 
-  public selectedBasicComponents(
-    cpu: CPU,
-    gpu: GPU,
-    ram: RAM,
-    drive: Drive
-  ): void {
+  public selectedBasicComponents(cpu: CPU, gpu: GPU, ram: RAM): void {
     this.selectedCPU = cpu;
     this.selectedGPU = gpu;
     this.selectedRAM = ram;
-    this.selectedDrive = drive;
   }
 }
 
