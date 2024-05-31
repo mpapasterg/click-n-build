@@ -81,6 +81,7 @@ export class GPU extends BasicComponent {
   public vram_type: string | undefined;
   public vram_size: number | undefined;
   public pcie_type: string | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -94,7 +95,8 @@ export class GPU extends BasicComponent {
     oc_clock: number | undefined,
     vram_type: string | undefined,
     vram_size: number | undefined,
-    pcie_type: string | undefined
+    pcie_type: string | undefined,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.architecture = architecture;
@@ -103,6 +105,7 @@ export class GPU extends BasicComponent {
     this.vram_type = vram_type;
     this.vram_size = vram_size;
     this.pcie_type = pcie_type;
+    this.watt_consumption = watt_consumption;
   }
 }
 
@@ -113,6 +116,7 @@ export class RAM extends BasicComponent {
   public clock_speed: number | undefined;
   public cas_latency: number | undefined;
   public rgb_lighting: boolean | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -126,7 +130,8 @@ export class RAM extends BasicComponent {
     size: number | undefined,
     clock_speed: number | undefined,
     cas_latency: number | undefined,
-    rgb_lighting: boolean | undefined
+    rgb_lighting: boolean | undefined,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
@@ -135,6 +140,39 @@ export class RAM extends BasicComponent {
     this.clock_speed = clock_speed;
     this.cas_latency = cas_latency;
     this.rgb_lighting = rgb_lighting;
+    this.watt_consumption = watt_consumption;
+  }
+}
+
+export class Drive extends BasicComponent {
+  public storage_type: string | undefined;
+  public size: number | undefined;
+  public read_speed: number | undefined;
+  public write_speed: number | undefined;
+  public buffer_size: number | undefined;
+  public watt_consumption: number | undefined;
+
+  public constructor(
+    id: number,
+    name: string,
+    price: number,
+    image: string | undefined,
+    description: string | undefined,
+    manufacturer: string | undefined,
+    storage_type: string | undefined,
+    size: number | undefined,
+    read_speed: number | undefined,
+    write_speed: number | undefined,
+    buffer_size: number | undefined,
+    watt_consumption: number | undefined
+  ) {
+    super(id, name, price, image, description, manufacturer);
+    this.storage_type = storage_type;
+    this.size = size;
+    this.read_speed = read_speed;
+    this.write_speed = write_speed;
+    this.buffer_size = buffer_size;
+    this.watt_consumption = watt_consumption;
   }
 }
 
@@ -153,6 +191,7 @@ export abstract class DependentComponent extends Component {
 export class CoolingSystem extends DependentComponent {
   public type: string | undefined;
   public active_cooling: boolean | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -161,18 +200,20 @@ export class CoolingSystem extends DependentComponent {
     image: string | undefined,
     description: string | undefined,
     manufacturer: string | undefined,
-
     type: string,
-    active_cooling: boolean
+    active_cooling: boolean,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
     this.active_cooling = active_cooling;
+    this.watt_consumption = watt_consumption;
   }
 }
 
 export class Decoration extends DependentComponent {
   public type: string | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -181,10 +222,12 @@ export class Decoration extends DependentComponent {
     image: string | undefined,
     description: string | undefined,
     manufacturer: string | undefined,
-    type: string
+    type: string,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
+    this.watt_consumption = watt_consumption;
   }
 }
 
@@ -196,6 +239,9 @@ export class Motherboard extends DependentComponent {
   public pcie_slots: Array<string> | undefined;
   public external_io: Array<string> | undefined;
   public rgb_lighting: boolean | undefined;
+  public watt_consumption: number | undefined;
+  public ram_type: string | undefined;
+  public nvme_slots: number | undefined;
 
   public constructor(
     id: number,
@@ -210,7 +256,10 @@ export class Motherboard extends DependentComponent {
     memory_channels: Array<string> | undefined,
     pcie_slots: Array<string> | undefined,
     external_io: Array<string> | undefined,
-    rgb_lighting: boolean | undefined
+    rgb_lighting: boolean | undefined,
+    watt_consumption: number | undefined,
+    ram_type: string | undefined,
+    nvme_slots: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.size_type = size_type;
@@ -220,6 +269,9 @@ export class Motherboard extends DependentComponent {
     this.pcie_slots = pcie_slots;
     this.external_io = external_io;
     this.rgb_lighting = rgb_lighting;
+    this.watt_consumption = watt_consumption;
+    this.ram_type = ram_type;
+    this.nvme_slots = nvme_slots;
   }
 }
 
@@ -254,6 +306,7 @@ export class Case extends DependentComponent {
   public motherboard_types_supported: Array<string> | undefined;
   public skin: string | undefined;
   public features: Array<string> | undefined;
+  public watt_consumption: number | undefined;
 
   public constructor(
     id: number,
@@ -265,42 +318,15 @@ export class Case extends DependentComponent {
     type: string | undefined,
     motherboard_types_supported: Array<string> | undefined,
     skin: string | undefined,
-    features: Array<string> | undefined
+    features: Array<string> | undefined,
+    watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
     this.type = type;
     this.motherboard_types_supported = motherboard_types_supported;
     this.skin = skin;
     this.features = features;
-  }
-}
-
-export class Drive extends DependentComponent {
-  public storage_type: string | undefined;
-  public size: number | undefined;
-  public read_speed: number | undefined;
-  public write_speed: number | undefined;
-  public buffer_size: number | undefined;
-
-  public constructor(
-    id: number,
-    name: string,
-    price: number,
-    image: string | undefined,
-    description: string | undefined,
-    manufacturer: string | undefined,
-    storage_type: string | undefined,
-    size: number | undefined,
-    read_speed: number | undefined,
-    write_speed: number | undefined,
-    buffer_size: number | undefined
-  ) {
-    super(id, name, price, image, description, manufacturer);
-    this.storage_type = storage_type;
-    this.size = size;
-    this.read_speed = read_speed;
-    this.write_speed = write_speed;
-    this.buffer_size = buffer_size;
+    this.watt_consumption = watt_consumption;
   }
 }
 
