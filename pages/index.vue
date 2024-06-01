@@ -93,6 +93,7 @@ definePageMeta({
           </div>
         </div>
       </div>
+      <q-separator spaced color="black" size="2px" />
       <div class="row justify-center">
         <div class="col vertical-bottom">
           <div class="row q-pa-md justify-center text-h5">
