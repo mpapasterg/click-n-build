@@ -12,7 +12,6 @@ import {
 // Field Schemas
 
 export const BuildSchema = z.object({
-  id: z.number(),
   name: z.string(),
   cpu: z.number(),
   gpu: z.number(),
@@ -63,9 +62,9 @@ Schemas[BuildGetURL] = {
   response: BuildGetResponseSchema,
 };
 
-// POST /api/build/[id]
+// POST /api/build/
 
-export const BuildPostURL: string = "/api/build/[id]";
+export const BuildPostURL: string = "/api/build/";
 export const BuildPostRequestSchema = ClientRequestSchema.extend(
   BuildSchema.shape
 );
@@ -115,7 +114,7 @@ Schemas[BuildRatePostURL] = {
 
 export const BuildGenerateGetURL: string = "/api/build/generate";
 export const BuildGenerateGetRequestSchema = ClientRequestSchema.extend({
-  questions: AnsweredQuestionSchema.array(),
+  answers: AnsweredQuestionSchema.array(),
 });
 export const BuildGenerateGetResponseSchema = ServerResponseSchema.extend({
   builds: BuildSchema.array(),

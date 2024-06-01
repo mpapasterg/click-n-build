@@ -5,7 +5,7 @@ import { Schemas } from "../global";
 
 // GET /api/library/[id]
 
-export const LibraryGetURL: string = "/api/library/[id]";
+export const LibraryGetURL: string = "/api/library";
 export const LibraryGetRequestSchema = ClientRequestSchema;
 export const LibraryGetResponseSchema = ServerResponseSchema.extend({
   builds: BuildSchema.array(),

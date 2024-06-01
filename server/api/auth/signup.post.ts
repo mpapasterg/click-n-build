@@ -1,4 +1,3 @@
-import mongoose from "mongoose";
 import { Builder } from "~/specs/domain";
 
 export default defineEventHandler(async (event) => {
@@ -36,8 +35,10 @@ export default defineEventHandler(async (event) => {
   }
 
   // Check if user with given email exists
-  const user: Builder | null = await BuilderModel.findOne({ email: email });
-  if (user !== null) {
+  const user: Builder | null = await BuilderModel.findOne({
+    email: email,
+  }).exec();
+  if (user === null) {
     throw createError({
       statusCode: sanitizeStatusCode(409),
       statusMessage: sanitizeStatusMessage("Conflict"),
@@ -48,17 +49,29 @@ export default defineEventHandler(async (event) => {
   }
 
   // Create new user with given credentials
-  const newUser = await BuilderModel.create({
-    email,
-    username,
-    password,
-  });
-  newUser.save();
+  let newUser;
+  try {
+    newUser = await BuilderModel.create({
+      email,
+      username,
+      password,
+    });
+    newUser.save();
+  } catch (error) {
+    throw createError({
+      statusCode: sanitizeStatusCode(400),
+      statusMessage: sanitizeStatusMessage("Bad Request"),
+      data: {
+        message: "Could not create user",
+      },
+    });
+  }
 
   // Return with auth information
   const auth: Auth = {
-    email,
-    username,
+    id: newUser.id,
+    email: newUser.email,
+    username: newUser.username,
   };
   setResponseStatus(
     event,

@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { Schemas } from "../global";
+import { IDSchema, Schemas } from "../global";
 
 // Field Schemas
 
@@ -33,6 +33,7 @@ export const PasswordSchema = z
   );
 
 export const AuthSchema = z.object({
+  id: IDSchema,
   username: UsernameSchema,
   email: EmailSchema,
 });

@@ -1,55 +1,13 @@
-import { http, RequestHandler, type ResponseResolver } from "msw";
+import { http, HttpResponse, RequestHandler } from "msw";
 import * as cookie from "cookie";
-import { jwtVerify, SignJWT, type JWTPayload } from "jose";
-
-// Define mock auth data
-export const mockEmail: string = "test@test.com";
-export const mockUsername: string = "test";
-export const mockPassword: string = "passwd123!";
-const mockSecret: Uint8Array = new TextEncoder().encode("secret");
-
-type AddParameters<
-  TFunction extends (...args: any) => any,
-  TParameters extends [...args: any]
-> = (
-  ...args: [...Parameters<TFunction>, ...TParameters]
-) => ReturnType<TFunction>;
-
-// Define higher order handler for API endpoints requiring authentication
-export const verified: (
-  resolver: (
-    ...args: [...Parameters<ResponseResolver>, JWTPayload]
-  ) => ReturnType<ResponseResolver>
-) => ResponseResolver = (resolver) => async (info) => {
-  const request = info.request;
-
-  const accessToken: string | null = request.headers.get("x-auth-token");
-  // Check if access token exists
-  if (accessToken === null) {
-    const response: ServerErrorResponse = {
-      message: "Missing access token",
-    };
-    return Response.json(response, {
-      status: 400,
-      statusText: "Bad Request",
-    });
-  }
-
-  // Check if access token is valid
-  let payload: JWTPayload | undefined;
-  try {
-    payload = (await jwtVerify(accessToken, mockSecret)).payload;
-  } catch (error) {
-    const response: ServerErrorResponse = {
-      message: "Invalid access token",
-    };
-    return Response.json(response, {
-      status: 401,
-      statusText: "Unauthorized",
-    });
-  }
-  return resolver(info, payload);
-};
+import { SignJWT } from "jose";
+import {
+  mockBuilderEmail,
+  mockBuilderID,
+  mockBuilderPassword,
+  mockBuilderUsername,
+  mockSecret,
+} from "../data/auth";
 
 // Define all API request handlers
 export const handlers: Array<RequestHandler> = [
@@ -66,7 +24,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid Credentials",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -78,35 +36,36 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid credentials",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
     }
 
     // Check credentials validity
-    if (email !== mockEmail) {
+    if (email !== mockBuilderEmail) {
       const response: ServerErrorResponse = {
         message: "Email does not match user",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 404,
         statusText: "Not Found",
       });
     }
-    if (password !== mockPassword) {
+    if (password !== mockBuilderPassword) {
       const response: ServerErrorResponse = {
         message: "Invalid password",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 401,
         statusText: "Unauthorized",
       });
     }
 
     const response: SignInPostResponse = {
+      id: mockBuilderID,
       email,
-      username: mockUsername,
+      username: mockBuilderUsername,
     };
     const accessToken = await new SignJWT(response)
       .setProtectedHeader({
@@ -114,7 +73,7 @@ export const handlers: Array<RequestHandler> = [
       })
       .setExpirationTime(60 * 60 * 24)
       .sign(mockSecret);
-    return Response.json(response, {
+    return HttpResponse.json(response, {
       headers: {
         "Set-Cookie": cookie.serialize("x-auth-token", accessToken, {
           httpOnly: true,
@@ -146,7 +105,7 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid Credentials",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
@@ -162,31 +121,32 @@ export const handlers: Array<RequestHandler> = [
       const response: ServerErrorResponse = {
         message: "Invalid credentials",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 400,
         statusText: "Bad Request",
       });
     }
 
     // Check if user with given email exists
-    if (email === mockEmail) {
+    if (email === mockBuilderEmail) {
       const response: ServerErrorResponse = {
         message: "User with specified email already exists",
       };
-      return Response.json(response, {
+      return HttpResponse.json(response, {
         status: 409,
         statusText: "Conflict",
       });
     }
 
     const response: SignUpPostResponse = {
+      id: mockBuilderID,
       email,
       username,
     };
-    return Response.json(response, { status: 201, statusText: "Created" });
+    return HttpResponse.json(response, { status: 201, statusText: "Created" });
   }),
   http.post(SignOutPostURL, () => {
     const response: SignOutPostResponse = {};
-    return Response.json(response, { status: 200, statusText: "OK" });
+    return HttpResponse.json(response, { status: 200, statusText: "OK" });
   }),
 ];

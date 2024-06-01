@@ -25,11 +25,10 @@ export default defineEventHandler(
     }
 
     // Check if access token is valid
-    console.log(process.env.JWT_SECRET);
-    let payload: JWTPayload | undefined;
+    let payload: (Auth & JWTPayload) | undefined;
     try {
       payload = (
-        await jwtVerify(
+        await jwtVerify<Auth>(
           accessToken,
           new TextEncoder().encode(process.env.JWT_SECRET)
         )
@@ -43,5 +42,13 @@ export default defineEventHandler(
         },
       });
     }
+
+    // Add payload to context
+    const auth: Auth = {
+      id: payload.id,
+      email: payload.email,
+      username: payload.username,
+    };
+    event.context.auth = auth;
   })
 );

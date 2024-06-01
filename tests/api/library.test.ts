@@ -1,3 +1,3 @@
 import { describe, it, expect } from "vitest";
 
-describe.todo("GET /api/library/[id]", () => {});
+describe.todo("GET /api/library", () => {});

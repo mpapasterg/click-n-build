@@ -18,6 +18,7 @@ import {
   InventoryItem,
   Question,
 } from "./domain";
+import type { NonFunctionProperties } from "./global";
 const { Schema, model } = mongoose;
 
 // Mongoose Database Schemas
@@ -147,8 +148,7 @@ const CaseSchema = new Schema<Case>({
 
 const BuildSchema = new Schema<
   Build & {
-    library: typeof Schema.ObjectId;
-    wall_of_builds: typeof Schema.ObjectId;
+    wall_of_builds: boolean;
   }
 >({
   name: {
@@ -169,6 +169,11 @@ const BuildSchema = new Schema<
   ram: {
     type: Schema.ObjectId,
     ref: RAM.name,
+    required: true,
+  },
+  drive: {
+    type: Schema.ObjectId,
+    ref: Drive.name,
     required: true,
   },
   cooling_system: {
@@ -196,28 +201,33 @@ const BuildSchema = new Schema<
     ref: Case.name,
     required: true,
   },
-  drive: {
-    type: Schema.ObjectId,
-    ref: Drive.name,
-    required: true,
-  },
-  library: {
-    type: Schema.ObjectId,
-    ref: Library.name,
-    required: true,
-  },
   wall_of_builds: {
     type: Boolean,
     required: true,
   },
 });
 
-const LibrarySchema = new Schema<Library>({});
+const LibrarySchema = new Schema<
+  Library & {
+    builder: typeof Schema.ObjectId;
+    build: typeof Schema.ObjectId;
+  }
+>({
+  builder: {
+    type: Schema.ObjectId,
+    ref: Builder.name,
+    required: true,
+  },
+  build: {
+    type: Schema.ObjectId,
+    ref: Build.name,
+    required: true,
+  },
+});
 
 const BillingInformationSchema = new Schema<
-  BillingInformation & { _id: boolean }
+  NonFunctionProperties<BillingInformation> & { _id: boolean }
 >({
-  _id: false,
   name: {
     type: String,
     required: true,
@@ -275,8 +285,10 @@ const BuilderSchema = new Schema<Builder>({
     type: String,
     required: true,
   },
-  billing_information: BillingInformationSchema,
-  library: LibrarySchema,
+  billing_information: {
+    type: Schema.ObjectId,
+    ref: BillingInformation.name,
+  },
 });
 
 const RatingSchema = new Schema<Rating>({

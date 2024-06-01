@@ -27,7 +27,6 @@ describe.todo("BillingInformation", () => {
   test.todo("Is valid", () => {
     // Check valid
     const billingInformation = new BillingInformation(
-      1,
       "Test",
       "Test",
       "Hfaistou 38",

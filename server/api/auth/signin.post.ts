@@ -43,7 +43,8 @@ export default defineEventHandler(async (event) => {
 
   // Generate JWT access token
   const auth: Auth = {
-    email,
+    id: user.id,
+    email: user.email,
     username: user.username,
   };
   const accessToken = await new SignJWT(auth)

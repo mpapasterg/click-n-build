@@ -103,6 +103,23 @@ export const ComponentSchema = z.union([
   CaseSchema,
 ]);
 
+export const ComponentTypeSchema = z.union([
+  z.literal(CPU.name),
+  z.literal(GPU.name),
+  z.literal(RAM.name),
+  z.literal(Drive.name),
+  z.literal(CoolingSystem.name),
+  z.literal(Decoration.name),
+  z.literal(Motherboard.name),
+  z.literal(PSU.name),
+  z.literal(Case.name),
+]);
+
+export const ComponentQueryParametersSchema = z.map(
+  z.string(),
+  z.union([z.string(), z.number()])
+);
+
 // GET /api/component/[type]
 
 export const ComponentGetURL: string = "/api/component/[type]";

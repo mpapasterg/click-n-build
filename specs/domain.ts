@@ -331,42 +331,39 @@ export class Case extends DependentComponent {
 }
 
 export class Build {
-  public id: number;
   public name: string;
   public gpu: GPU;
   public cpu: CPU;
   public ram: RAM;
+  public drive: Drive;
   public cooling_system: CoolingSystem;
   public decoration: Decoration;
   public motherboard: Motherboard;
   public psu: PSU;
   public pc_case: Case;
-  public drive: Drive;
 
   public constructor(
-    id: number,
     name: string,
     gpu: GPU,
     cpu: CPU,
     ram: RAM,
+    drive: Drive,
     cooling_system: CoolingSystem,
     decoration: Decoration,
     motherboard: Motherboard,
     psu: PSU,
-    pc_case: Case,
-    drive: Drive
+    pc_case: Case
   ) {
-    this.id = id;
     this.name = name;
     this.gpu = gpu;
     this.cpu = cpu;
     this.ram = ram;
+    this.drive = drive;
     this.cooling_system = cooling_system;
     this.decoration = decoration;
     this.motherboard = motherboard;
     this.psu = psu;
     this.pc_case = pc_case;
-    this.drive = drive;
   }
 
   public static generateCandidateBuilds(
@@ -415,7 +412,6 @@ export class WallOfBuilds {
 }
 
 export class BillingInformation {
-  public id: number;
   public name: string;
   public surname: string;
   public address: string;
@@ -424,7 +420,6 @@ export class BillingInformation {
   public country: string;
 
   public constructor(
-    id: number,
     name: string,
     surname: string,
     address: string,
@@ -432,7 +427,6 @@ export class BillingInformation {
     city: string,
     country: string
   ) {
-    this.id = id;
     this.name = name;
     this.surname = surname;
     this.address = address;
