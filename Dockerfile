@@ -6,7 +6,7 @@ ARG PORT=8000
 
 ENV NODE_ENV=production
 
-WORKDIR /home/node/click-n-build
+WORKDIR /nuxt
 
 # Build
 
@@ -24,7 +24,7 @@ RUN npm prune
 
 FROM base
 
-COPY --from=build /home/node/click-n-build/.output .output
+COPY --from=build /nuxt/.output .output
 
 ENV PORT=${PORT}
 

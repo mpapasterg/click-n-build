@@ -67,7 +67,7 @@ const onSubmit = async () => {
   });
   if (response.error.value) {
     formError.value = ServerErrorResponseSchema.parse(
-      response.error.value.data
+      response.error.value.data.data
     ).message;
   } else {
     navigateTo("/signin", { replace: true });

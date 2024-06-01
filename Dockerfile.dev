@@ -2,7 +2,9 @@ FROM node:20.5.1-bookworm as base
 
 ENV NODE_ENV=development
 
-WORKDIR /home/node/click-n-build
+ARG PORT=8000
+
+WORKDIR /nuxt
 
 # Build
 
@@ -16,6 +18,8 @@ RUN npm install
 
 FROM base
 
-COPY --from=build /home/node/click-n-build .
+COPY --from=build /nuxt .
+
+ENV PORT=${PORT}
 
 CMD [ "npm", "run", "dev" ]

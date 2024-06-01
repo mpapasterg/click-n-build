@@ -86,8 +86,8 @@ export default defineNuxtConfig({
   },
   devServer: {
     host: "0.0.0.0",
-    https: false,
-    port: 3000,
+    https: true,
+    port: 8000,
   },
   ignorePrefix: "-",
   ssr: true,

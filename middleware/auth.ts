@@ -9,4 +9,10 @@ export default defineNuxtRouteMiddleware((to, _) => {
       },
     });
   }
+
+  if (to.path === "/signin" || to.path === "/signup") {
+    return navigateTo({
+      path: "/",
+    });
+  }
 });

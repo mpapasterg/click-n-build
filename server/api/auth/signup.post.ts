@@ -4,7 +4,7 @@ export default defineEventHandler(async (event) => {
   // Extract credentials from form data
   const credentials: FormData = await readFormData(event);
   const email: string | undefined = credentials.get("email")?.toString();
-  const username: string | undefined = credentials.get("email")?.toString();
+  const username: string | undefined = credentials.get("username")?.toString();
   const password: string | undefined = credentials.get("password")?.toString();
 
   // Check if all credentials were sent
@@ -38,7 +38,7 @@ export default defineEventHandler(async (event) => {
   const user: Builder | null = await BuilderModel.findOne({
     email: email,
   }).exec();
-  if (user === null) {
+  if (user !== null) {
     throw createError({
       statusCode: sanitizeStatusCode(409),
       statusMessage: sanitizeStatusMessage("Conflict"),

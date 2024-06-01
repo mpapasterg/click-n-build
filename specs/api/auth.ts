@@ -1,7 +1,9 @@
 import { z } from "zod";
-import { IDSchema, Schemas } from "../global";
+import { Schemas } from "../global";
 
 // Field Schemas
+
+export const IDSchema = z.string();
 
 export const UsernameSchema = z
   .string()
@@ -83,6 +85,7 @@ Schemas[SignOutPostURL] = {
 
 declare global {
   type Auth = z.infer<typeof AuthSchema>;
+  type ID = z.infer<typeof IDSchema>;
 
   // POST /api/auth/signin
   type SignInPostRequest = z.infer<typeof SignInPostRequestSchema>;

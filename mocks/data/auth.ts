@@ -1,4 +1,4 @@
-export const mockBuilderID: number = 1;
+export const mockBuilderID: string = "asdf";
 export const mockBuilderEmail: string = "test@test.com";
 export const mockBuilderUsername: string = "test";
 export const mockBuilderPassword: string = "passwd123!";

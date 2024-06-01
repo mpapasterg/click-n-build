@@ -1,7 +1,6 @@
 // Higher-Order endpoint for ID validation
 
 import { type H3Event } from "h3";
-import { IDSchema } from "~/specs/global";
 
 type Tail<T extends unknown[]> = T extends [infer Head, ...infer Tail]
   ? Tail
@@ -10,7 +9,7 @@ type Tail<T extends unknown[]> = T extends [infer Head, ...infer Tail]
 export const withID =
   <T extends (event: H3Event, ...args: any) => any>(
     eventHandler: (
-      id: number,
+      id: string,
       event: H3Event,
       ...args: Tail<Parameters<T>>
     ) => ReturnType<T> | void
@@ -33,7 +32,7 @@ export const withID =
         },
       });
     }
-    const id: number = idParseResult.data;
+    const id: string = idParseResult.data;
     // const idData: number = Number(getRouterParam(event, "id"));
     // if (Number.isNaN(idData)) {
     //   throw createError({
