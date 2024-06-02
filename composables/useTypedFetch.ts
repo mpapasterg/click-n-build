@@ -12,9 +12,16 @@ export const useTypedFetch = async <T>(
       if (result.success) {
         return result.data;
       } else {
-        throw new Error(
-          `Fetch from '${request.toString()}' did not return a valid response.`
-        );
+        console.log(result.error);
+        throw createError({
+          statusCode: 404,
+          statusMessage: "Not Found",
+          data: {
+            data: {
+              message: `Fetch from '${request.toString()}' did not return a valid response.`,
+            },
+          },
+        });
       }
     },
     onResponseError({ response }) {

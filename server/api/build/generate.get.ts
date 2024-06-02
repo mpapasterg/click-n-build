@@ -1,7 +1,3 @@
-import { Build, Question, AnsweredQuestion } from "#imports";
-import { BuildGenerateGetRequestSchema } from "~/specs/api/build";
-import { type NonFunctionProperties } from "~/specs/global";
-
 export default defineEventHandler(async (event) => {
   // Get answers data
   const answersParseResult = await readValidatedBody(
@@ -20,19 +16,19 @@ export default defineEventHandler(async (event) => {
   const answersData = answersParseResult.data.answers;
 
   // Get questions for each answer
-  const questions: Array<Question> = [];
+  const questions: Array<InterfaceType<typeof Question>> = [];
   for (const answer of answersData) {
     let question = (await QuestionModel.findOne({
       question: answer.question,
     }).exec())!;
     questions.push(question);
   }
-  const answers: Array<AnsweredQuestion> = answersData.map(
+  const answers: Array<InstanceType<typeof AnsweredQuestion>> = answersData.map(
     (answer, index) => new AnsweredQuestion(questions[index], answer.selected)
   );
 
   // Generate build using answers
-  const candidateBuilds: Array<NonFunctionProperties<Build>> = [];
+  const candidateBuilds: Array<InterfaceType<typeof Build>> = [];
   for (const build of Build.generateCandidateBuilds(answers)) {
     candidateBuilds.push({
       name: build.name,

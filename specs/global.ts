@@ -9,9 +9,7 @@ export const ServerErrorResponseSchema = ServerResponseSchema.extend({
 type NonFunctionPropertyNames<T> = {
   [K in keyof T]: T[K] extends Function ? never : K;
 }[keyof T];
-export type NonFunctionProperties<T> = Pick<T, NonFunctionPropertyNames<T>>;
-
-export const Schemas: EndpointSchemaMap = {};
+type NonFunctionProperties<T> = Pick<T, NonFunctionPropertyNames<T>>;
 
 declare global {
   type ClientRequest = z.infer<typeof ClientRequestSchema>;
@@ -26,4 +24,22 @@ declare global {
   type EndpointSchemaMap = {
     [key: string]: EndpointSchema;
   };
+
+  type FetchResponse<T> =
+    | {
+        success: true;
+        data: T;
+      }
+    | {
+        success: false;
+        error: ServerErrorResponse;
+      };
+
+  type InterfaceType<T extends abstract new (...args: any) => any> =
+    NonFunctionProperties<InstanceType<T>>;
+
+  type NoIDType<T extends abstract new (...args: any) => any> =
+    InterfaceType<T> & {
+      id: undefined;
+    };
 }

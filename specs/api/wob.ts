@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Schemas } from "../global";
 
 // Field Schemas
 
@@ -10,10 +9,6 @@ export const WoBGetRequestSchema = ClientRequestSchema;
 export const WoBGetResponseSchema = ServerResponseSchema.extend({
   builds: BuildSchema.array(),
 });
-Schemas[WoBGetURL] = {
-  request: WoBGetRequestSchema,
-  response: WoBGetResponseSchema,
-};
 
 // Global Schema Types Declaration
 

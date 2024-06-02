@@ -1,5 +1,4 @@
 import { z } from "zod";
-import { Schemas } from "../global";
 
 // Field Schemas
 
@@ -10,10 +9,6 @@ export const LibraryGetRequestSchema = ClientRequestSchema;
 export const LibraryGetResponseSchema = ServerResponseSchema.extend({
   builds: BuildSchema.array(),
 });
-Schemas[LibraryGetURL] = {
-  request: LibraryGetRequestSchema,
-  response: LibraryGetResponseSchema,
-};
 
 // Global Schema Types Declaration
 

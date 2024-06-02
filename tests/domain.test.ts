@@ -1,4 +1,3 @@
-import { AnsweredQuestion } from "#imports";
 import { describe, expect, test } from "vitest";
 
 describe.todo("Component", () => {

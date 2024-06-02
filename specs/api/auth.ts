@@ -1,9 +1,12 @@
 import { z } from "zod";
-import { Schemas } from "../global";
 
 // Field Schemas
 
 export const IDSchema = z.string();
+
+export const IDParamSchema = z.object({
+  id: z.string(),
+});
 
 export const UsernameSchema = z
   .string()
@@ -50,10 +53,6 @@ export const SignInPostRequestSchema = ClientRequestSchema.extend({
 export const SignInPostResponseSchema = ServerResponseSchema.extend(
   AuthSchema.shape
 );
-Schemas[SignInPostURL] = {
-  request: SignInPostRequestSchema,
-  response: SignInPostResponseSchema,
-};
 
 // POST /api/auth/signup
 
@@ -66,20 +65,12 @@ export const SignUpPostRequestSchema = ClientRequestSchema.extend({
 export const SignUpPostResponseSchema = ServerResponseSchema.extend(
   AuthSchema.shape
 );
-Schemas[SignUpPostURL] = {
-  request: SignUpPostRequestSchema,
-  response: SignUpPostResponseSchema,
-};
 
 // POST /api/auth/signout
 
 export const SignOutPostURL: string = "/api/auth/signout";
 export const SignOutPostRequestSchema = ClientRequestSchema;
 export const SignOutPostResponseSchema = ServerResponseSchema;
-Schemas[SignOutPostURL] = {
-  request: SignOutPostRequestSchema,
-  response: SignOutPostResponseSchema,
-};
 
 // Global Schema Types Declaration
 

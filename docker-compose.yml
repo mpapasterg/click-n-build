@@ -37,7 +37,7 @@ services:
     ports:
       - "8000:8000"
     volumes:
-      - ./node_modules:/nuxt/node_modules
+      - ./:/nuxt
     depends_on:
       - mongodb
   nginx:

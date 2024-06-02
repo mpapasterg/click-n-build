@@ -21,9 +21,10 @@ export const withID =
     // Check if ID is of correct type
     const idParseResult = await getValidatedRouterParams(
       event,
-      IDSchema.safeParse
+      IDParamSchema.safeParse
     );
     if (!idParseResult.success) {
+      console.log(idParseResult.error);
       throw createError({
         statusCode: sanitizeStatusCode(400),
         statusMessage: sanitizeStatusMessage("Bad Request"),
@@ -32,7 +33,7 @@ export const withID =
         },
       });
     }
-    const id: string = idParseResult.data;
+    const id: string = idParseResult.data.id;
     // const idData: number = Number(getRouterParam(event, "id"));
     // if (Number.isNaN(idData)) {
     //   throw createError({
@@ -53,7 +54,7 @@ export const withID =
     //     },
     //   });
     // }
-    // const id: number = idParseResult.data;
+    // const id: string = idParseResult.data;
 
     return eventHandler(id, event, ...args);
   };

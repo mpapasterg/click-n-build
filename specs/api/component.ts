@@ -1,15 +1,14 @@
 import { z } from "zod";
-import { Schemas } from "../global";
 
 // Field Schemas
 
 export const BaseComponentSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   price: z.number().nonnegative(),
-  image: z.string(),
-  description: z.string(),
-  manufacturer: z.string(),
+  image: z.string().optional(),
+  description: z.string().optional(),
+  manufacturer: z.string().optional(),
 });
 
 export const CPUSchema = BaseComponentSchema.extend({
@@ -77,7 +76,7 @@ export const MotherboardSchema = BaseComponentSchema.extend({
 });
 
 export const PSUSchema = BaseComponentSchema.extend({
-  size_type: z.number().optional(),
+  size_type: z.string().optional(),
   max_wattage: z.number().optional(),
   certification: z.string().optional(),
   modularity_type: z.string().optional(),
@@ -103,19 +102,7 @@ export const ComponentSchema = z.union([
   CaseSchema,
 ]);
 
-export const ComponentTypeSchema = z.union([
-  z.literal(CPU.name),
-  z.literal(GPU.name),
-  z.literal(RAM.name),
-  z.literal(Drive.name),
-  z.literal(CoolingSystem.name),
-  z.literal(Decoration.name),
-  z.literal(Motherboard.name),
-  z.literal(PSU.name),
-  z.literal(Case.name),
-]);
-
-export const ComponentQueryParametersSchema = z.map(
+export const ComponentQueryParametersSchema = z.record(
   z.string(),
   z.union([z.string(), z.number()])
 );
@@ -127,14 +114,12 @@ export const ComponentGetRequestSchema = ClientRequestSchema;
 export const ComponentGetResponseSchema = ServerResponseSchema.extend({
   components: ComponentSchema.array(),
 });
-Schemas[ComponentGetURL] = {
-  request: ComponentGetRequestSchema,
-  response: ComponentGetResponseSchema,
-};
 
 // Global Schema Types Declaration
 
 declare global {
+  type BaseComponent = z.infer<typeof BaseComponentSchema>;
+
   // GET /api/component/[type]
   type ComponentGetRequest = z.infer<typeof ComponentGetRequestSchema>;
   type ComponentGetResponse = z.infer<typeof ComponentGetResponseSchema>;

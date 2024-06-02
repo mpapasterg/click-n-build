@@ -1,34 +1,28 @@
 import { z } from "zod";
-import { Schemas } from "../global";
-import {
-  RAMSchema,
-  CoolingSystemSchema,
-  DecorationSchema,
-  MotherboardSchema,
-  PSUSchema,
-  CaseSchema,
-} from "./component";
 
 // Field Schemas
 
 export const BuildSchema = z.object({
+  id: z.string(),
   name: z.string(),
-  cpu: z.number(),
-  gpu: z.number(),
-  ram: z.number(),
-  cooling_system: z.number(),
-  decoration: z.number(),
-  motherboard: z.number(),
-  psu: z.number(),
-  pc_case: z.number(),
+  cpu: z.string(),
+  gpu: z.string(),
+  ram: z.string(),
+  drive: z.string(),
+  cooling_system: z.string(),
+  decoration: z.string(),
+  motherboard: z.string(),
+  psu: z.string(),
+  pc_case: z.string(),
 });
 
 export const BuildPopulatedSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   cpu: CPUSchema,
   gpu: GPUSchema,
   ram: RAMSchema,
+  drive: DriveSchema,
   cooling_system: CoolingSystemSchema,
   decoration: DecorationSchema,
   motherboard: MotherboardSchema,
@@ -57,10 +51,6 @@ export const BuildGetRequestSchema = ClientRequestSchema;
 export const BuildGetResponseSchema = ServerResponseSchema.extend(
   BuildPopulatedSchema.shape
 );
-Schemas[BuildGetURL] = {
-  request: BuildGetRequestSchema,
-  response: BuildGetResponseSchema,
-};
 
 // POST /api/build/
 
@@ -69,20 +59,12 @@ export const BuildPostRequestSchema = ClientRequestSchema.extend(
   BuildSchema.shape
 );
 export const BuildPostResponseSchema = ServerResponseSchema;
-Schemas[BuildPostURL] = {
-  request: BuildPostRequestSchema,
-  response: BuildPostResponseSchema,
-};
 
 // POST /api/build/[id]/post
 
 export const BuildPostPostURL: string = "/api/build/[id]/post";
 export const BuildPostPostRequestSchema = ClientRequestSchema;
 export const BuildPostPostResponseSchema = ServerResponseSchema;
-Schemas[BuildPostPostURL] = {
-  request: BuildPostPostRequestSchema,
-  response: BuildPostPostResponseSchema,
-};
 
 // POST /api/build/[id]/purchase
 
@@ -91,10 +73,6 @@ export const BuildPurchasePostRequestSchema = ClientRequestSchema.extend(
   BillingInformationSchema.shape
 );
 export const BuildPurchasePostResponseSchema = ServerResponseSchema;
-Schemas[BuildPurchasePostURL] = {
-  request: BuildPurchasePostRequestSchema,
-  response: BuildPurchasePostResponseSchema,
-};
 
 // POST /api/build/[id]/rate
 
@@ -105,10 +83,6 @@ export const BuildRatePostRequestSchema = ClientRequestSchema.extend({
   comment: z.string().optional(),
 });
 export const BuildRatePostResponseSchema = ServerResponseSchema;
-Schemas[BuildRatePostURL] = {
-  request: BuildRatePostRequestSchema,
-  response: BuildRatePostResponseSchema,
-};
 
 // GET /api/build/generate
 
@@ -119,10 +93,6 @@ export const BuildGenerateGetRequestSchema = ClientRequestSchema.extend({
 export const BuildGenerateGetResponseSchema = ServerResponseSchema.extend({
   builds: BuildSchema.array(),
 });
-Schemas[BuildGenerateGetURL] = {
-  request: BuildGenerateGetRequestSchema,
-  response: BuildGenerateGetResponseSchema,
-};
 
 // Global Schema Types Declaration
 

@@ -1,16 +1,23 @@
-// A middleware extends, protects or modifies the event at hand
-// Returning anything from a middleware will return that response and not execute event handlers for the specific request (not recommended)
+// Higher order event handler for endpoints requiring authentication
 
+import { type H3Event } from "h3";
 import { type JWTPayload, jwtVerify } from "jose";
-import { serverOnly } from "../utils/serverOnly";
 
-export default defineEventHandler(
-  serverOnly(async (event) => {
-    // Skip auth routes from checks
-    if (getRequestURL(event).pathname.startsWith("/api/auth")) {
-      return;
-    }
+type Tail<T extends unknown[]> = T extends [infer Head, ...infer Tail]
+  ? Tail
+  : never;
 
+export const withAuth =
+  <T extends (event: H3Event, ...args: any) => any>(
+    eventHandler: (
+      event: H3Event,
+      ...args: Tail<Parameters<T>>
+    ) => ReturnType<T> | void
+  ): ((
+    event: H3Event,
+    ...args: Tail<Parameters<T>>
+  ) => Promise<ReturnType<T> | void>) =>
+  async (event, ...args) => {
     const accessToken: string | undefined = getHeader(event, "x-auth-token");
 
     // Check if access token exists
@@ -50,5 +57,6 @@ export default defineEventHandler(
       username: payload.username,
     };
     event.context.auth = auth;
-  })
-);
+
+    return eventHandler(event, ...args);
+  };
