@@ -1,5 +1,5 @@
 export abstract class Component {
-  public id: number;
+  public id: string;
   public name: string;
   public price: number;
   public image: string | undefined;
@@ -7,7 +7,7 @@ export abstract class Component {
   public manufacturer: string | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -47,7 +47,7 @@ export class CPU extends BasicComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -84,7 +84,7 @@ export class GPU extends BasicComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -119,7 +119,7 @@ export class RAM extends BasicComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -153,7 +153,7 @@ export class Drive extends BasicComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -194,14 +194,14 @@ export class CoolingSystem extends DependentComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
     description: string | undefined,
     manufacturer: string | undefined,
-    type: string,
-    active_cooling: boolean,
+    type: string | undefined,
+    active_cooling: boolean | undefined,
     watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
@@ -216,13 +216,13 @@ export class Decoration extends DependentComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
     description: string | undefined,
     manufacturer: string | undefined,
-    type: string,
+    type: string | undefined,
     watt_consumption: number | undefined
   ) {
     super(id, name, price, image, description, manufacturer);
@@ -244,7 +244,7 @@ export class Motherboard extends DependentComponent {
   public nvme_slots: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -282,7 +282,7 @@ export class PSU extends DependentComponent {
   public modularity_type: string | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -309,7 +309,7 @@ export class Case extends DependentComponent {
   public watt_consumption: number | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     name: string,
     price: number,
     image: string | undefined,
@@ -332,8 +332,8 @@ export class Case extends DependentComponent {
 
 export class Build {
   public name: string;
-  public gpu: GPU;
   public cpu: CPU;
+  public gpu: GPU;
   public ram: RAM;
   public drive: Drive;
   public cooling_system: CoolingSystem;
@@ -344,8 +344,8 @@ export class Build {
 
   public constructor(
     name: string,
-    gpu: GPU,
     cpu: CPU,
+    gpu: GPU,
     ram: RAM,
     drive: Drive,
     cooling_system: CoolingSystem,
@@ -489,7 +489,7 @@ export abstract class User {
 export class Guest extends User {}
 
 export class Builder extends User {
-  public id: number;
+  public id: string;
   public username: string;
   public email: string;
   public password: string;
@@ -497,7 +497,7 @@ export class Builder extends User {
   public library: Library | undefined;
 
   public constructor(
-    id: number,
+    id: string,
     username: string,
     email: string,
     password: string,
@@ -581,7 +581,8 @@ export class InventoryItem {
   }
 }
 
-export abstract class SpellChecker {
+// Should be abstract class but due to bug in Nuxt auto-imports system it cannot be exported
+export class SpellChecker {
   public static spellCheck(comment: string): boolean {
     return false;
   } // TODO:
