@@ -1,29 +1,9 @@
 import mongoose from "mongoose";
-import {
-  CPU,
-  GPU,
-  RAM,
-  CoolingSystem,
-  Decoration,
-  Motherboard,
-  PSU,
-  Case,
-  Drive,
-  Build,
-  Library,
-  BillingInformation,
-  Purchase,
-  Builder,
-  Rating,
-  InventoryItem,
-  Question,
-} from "./domain";
-import type { NonFunctionProperties } from "./global";
 const { Schema, model } = mongoose;
 
 // Mongoose Database Schemas
 
-const CPUSchema = new Schema<CPU>({
+const CPUSchema = new Schema<BaseComponent & InterfaceType<typeof CPU>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -38,7 +18,7 @@ const CPUSchema = new Schema<CPU>({
   watt_consumption: Number,
 });
 
-const GPUSchema = new Schema<GPU>({
+const GPUSchema = new Schema<BaseComponent & InterfaceType<typeof GPU>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -53,7 +33,7 @@ const GPUSchema = new Schema<GPU>({
   watt_consumption: Number,
 });
 
-const RAMSchema = new Schema<RAM>({
+const RAMSchema = new Schema<BaseComponent & InterfaceType<typeof RAM>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -68,7 +48,7 @@ const RAMSchema = new Schema<RAM>({
   watt_consumption: Number,
 });
 
-const DriveSchema = new Schema<Drive>({
+const DriveSchema = new Schema<BaseComponent & InterfaceType<typeof Drive>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -82,7 +62,9 @@ const DriveSchema = new Schema<Drive>({
   watt_consumption: Number,
 });
 
-const CoolingSystemSchema = new Schema<CoolingSystem>({
+const CoolingSystemSchema = new Schema<
+  BaseComponent & InterfaceType<typeof CoolingSystem>
+>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -93,7 +75,9 @@ const CoolingSystemSchema = new Schema<CoolingSystem>({
   watt_consumption: Number,
 });
 
-const DecorationSchema = new Schema<Decoration>({
+const DecorationSchema = new Schema<
+  BaseComponent & InterfaceType<typeof Decoration>
+>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -103,7 +87,9 @@ const DecorationSchema = new Schema<Decoration>({
   watt_consumption: Number,
 });
 
-const MotherboardSchema = new Schema<Motherboard>({
+const MotherboardSchema = new Schema<
+  BaseComponent & InterfaceType<typeof Motherboard>
+>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -121,7 +107,7 @@ const MotherboardSchema = new Schema<Motherboard>({
   nvme_slots: Number,
 });
 
-const PSUSchema = new Schema<PSU>({
+const PSUSchema = new Schema<BaseComponent & InterfaceType<typeof PSU>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -133,7 +119,7 @@ const PSUSchema = new Schema<PSU>({
   modularity_type: String,
 });
 
-const CaseSchema = new Schema<Case>({
+const CaseSchema = new Schema<BaseComponent & InterfaceType<typeof Case>>({
   name: { type: String, unique: true, required: true },
   price: { type: Number, required: true },
   image: String,
@@ -147,7 +133,7 @@ const CaseSchema = new Schema<Case>({
 });
 
 const BuildSchema = new Schema<
-  Build & {
+  InterfaceType<typeof Build> & {
     wall_of_builds: boolean;
   }
 >({
@@ -208,7 +194,7 @@ const BuildSchema = new Schema<
 });
 
 const LibrarySchema = new Schema<
-  Library & {
+  InterfaceType<typeof Library> & {
     builder: typeof Schema.ObjectId;
     build: typeof Schema.ObjectId;
   }
@@ -226,7 +212,9 @@ const LibrarySchema = new Schema<
 });
 
 const BillingInformationSchema = new Schema<
-  NonFunctionProperties<BillingInformation> & { _id: boolean }
+  InterfaceType<typeof BillingInformation> & {
+    _id: boolean;
+  }
 >({
   name: {
     type: String,
@@ -254,7 +242,7 @@ const BillingInformationSchema = new Schema<
   },
 });
 
-const PurchaseSchema = new Schema<Purchase>({
+const PurchaseSchema = new Schema<InterfaceType<typeof Purchase>>({
   build: {
     type: Schema.ObjectId,
     ref: Build.name,
@@ -271,7 +259,7 @@ const PurchaseSchema = new Schema<Purchase>({
   },
 });
 
-const BuilderSchema = new Schema<Builder>({
+const BuilderSchema = new Schema<InterfaceType<typeof Builder>>({
   username: {
     type: String,
     required: true,
@@ -291,7 +279,7 @@ const BuilderSchema = new Schema<Builder>({
   },
 });
 
-const RatingSchema = new Schema<Rating>({
+const RatingSchema = new Schema<InterfaceType<typeof Rating>>({
   builder: {
     type: Schema.ObjectId,
     ref: Builder.name,
@@ -313,7 +301,7 @@ const RatingSchema = new Schema<Rating>({
   comment: String,
 });
 
-const InventoryItemSchema = new Schema<InventoryItem>({
+const InventoryItemSchema = new Schema<InterfaceType<typeof InventoryItem>>({
   component_name: { type: String, required: true, unique: true },
   stock: {
     type: Number,
@@ -321,7 +309,7 @@ const InventoryItemSchema = new Schema<InventoryItem>({
   },
 });
 
-const QuestionSchema = new Schema<Question>({
+const QuestionSchema = new Schema<InterfaceType<typeof Question>>({
   question: { type: String, required: true, unique: true },
   choices: {
     type: [String],
@@ -330,29 +318,72 @@ const QuestionSchema = new Schema<Question>({
 });
 
 // Create models for all collections
-export const CPUModel = model(CPU.name, CPUSchema);
-export const GPUModel = model(GPU.name, GPUSchema);
-export const RAMModel = model(RAM.name, RAMSchema);
-export const CoolingSystemModel = model(
-  CoolingSystem.name,
-  CoolingSystemSchema
+export const CPUModel = model<BaseComponent & InterfaceType<typeof CPU>>(
+  CPU.name,
+  CPUSchema
 );
-export const DecorationModel = model(Decoration.name, DecorationSchema);
-export const MotherboardModel = model(Motherboard.name, MotherboardSchema);
-export const PSUModel = model(PSU.name, PSUSchema);
-export const CaseModel = model(Case.name, CaseSchema);
-export const DriveModel = model(Drive.name, DriveSchema);
-export const BuildModel = model(Build.name, BuildSchema);
-export const LibraryModel = model(Library.name, LibrarySchema);
-export const BillingInformationModel = model(
-  BillingInformation.name,
-  BillingInformationSchema
+export const GPUModel = model<BaseComponent & InterfaceType<typeof GPU>>(
+  GPU.name,
+  GPUSchema
 );
-export const PurchaseModel = model(Purchase.name, PurchaseSchema);
-export const BuilderModel = model(Builder.name, BuilderSchema);
-export const RatingModel = model(Rating.name, RatingSchema);
-export const InventoryItemModel = model(
+export const RAMModel = model<BaseComponent & InterfaceType<typeof RAM>>(
+  RAM.name,
+  RAMSchema
+);
+export const DriveModel = model<BaseComponent & InterfaceType<typeof Drive>>(
+  Drive.name,
+  DriveSchema
+);
+export const CoolingSystemModel = model<
+  BaseComponent & InterfaceType<typeof CoolingSystem>
+>(CoolingSystem.name, CoolingSystemSchema);
+export const DecorationModel = model<
+  BaseComponent & InterfaceType<typeof Decoration>
+>(Decoration.name, DecorationSchema);
+export const MotherboardModel = model<
+  BaseComponent & InterfaceType<typeof Motherboard>
+>(Motherboard.name, MotherboardSchema);
+export const PSUModel = model<BaseComponent & InterfaceType<typeof PSU>>(
+  PSU.name,
+  PSUSchema
+);
+export const CaseModel = model<BaseComponent & InterfaceType<typeof Case>>(
+  Case.name,
+  CaseSchema
+);
+export const BuildModel = model<
+  InterfaceType<typeof Build> & {
+    wall_of_builds: boolean;
+  }
+>(Build.name, BuildSchema);
+export const LibraryModel = model<
+  InterfaceType<typeof Library> & {
+    builder: typeof Schema.ObjectId;
+    build: typeof Schema.ObjectId;
+  }
+>(Library.name, LibrarySchema);
+export const BillingInformationModel = model<
+  InterfaceType<typeof BillingInformation> & {
+    _id: boolean;
+  }
+>(BillingInformation.name, BillingInformationSchema);
+export const PurchaseModel = model<InterfaceType<typeof Purchase>>(
+  Purchase.name,
+  PurchaseSchema
+);
+export const BuilderModel = model<InterfaceType<typeof Builder>>(
+  Builder.name,
+  BuilderSchema
+);
+export const RatingModel = model<InterfaceType<typeof Rating>>(
+  Rating.name,
+  RatingSchema
+);
+export const InventoryItemModel = model<InterfaceType<typeof InventoryItem>>(
   InventoryItem.name,
   InventoryItemSchema
 );
-export const QuestionModel = model(Question.name, QuestionSchema);
+export const QuestionModel = model<InterfaceType<typeof Question>>(
+  Question.name,
+  QuestionSchema
+);
