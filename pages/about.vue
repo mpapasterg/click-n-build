@@ -11,7 +11,7 @@ definePageMeta({});
       class="fullscreen bg-primary text-white text-center q-pa-md flex flex-center">
       <div>
         <div class="text-h1 row flex-center q-pa-lg">
-          <q-icon left size="8rem" name="img:logo.svg" />
+          <q-icon left size="8rem" name="img:logo.png" />
           <span class="brand-name">Click n' Build</span>
         </div>
 

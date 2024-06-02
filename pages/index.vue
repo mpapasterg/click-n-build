@@ -2,53 +2,14 @@
 definePageMeta({
   name: "home",
 });
+useHead({
+  title: "Home",
+});
 </script>
 
 <template>
-  <nuxt-layout name="main">
-    <template v-slot:navigation>
-      <q-btn
-        label="Building"
-        no-caps
-        size="lg"
-        color="primary"
-        text-color="black"
-        flat
-        to="/building" />
-      <q-btn
-        label="Guides & Tips"
-        no-caps
-        size="lg"
-        color="primary"
-        text-color="black"
-        flat
-        to="/guides" />
-      <q-btn
-        label="Wall of Builds"
-        no-caps
-        size="lg"
-        color="primary"
-        text-color="black"
-        flat
-        to="/wall-of-builds" />
-      <q-btn
-        label="Support"
-        no-caps
-        size="lg"
-        color="primary"
-        text-color="black"
-        flat
-        to="/support" />
-      <q-btn
-        label="About Us"
-        no-caps
-        size="lg"
-        color="primary"
-        text-color="black"
-        flat
-        to="/about" />
-    </template>
-    <div class="col text-black">
+  <nuxt-layout name="home-page">
+    <div class="column justify-between text-black">
       <div class="row justify-center">
         <div class="col-10 items-center">
           <div class="row justify-center q-pa-lg text-h4">
@@ -120,7 +81,7 @@ definePageMeta({
                 color="white"
                 text-color="black"
                 rounded
-                to="/wall-of-builds" />
+                to="/wob" />
               <q-btn
                 class="row q-ma-md"
                 label="Read our company policy"
