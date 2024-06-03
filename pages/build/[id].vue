@@ -1,4 +1,6 @@
 <script setup lang="ts">
+import { SpellChecker } from "~/specs/domain";
+
 definePageMeta({
   name: "build",
 });
@@ -33,6 +35,7 @@ const loadBuildData = async () => {
     build.value = {
       success: true,
       data: new Build(
+        data.id,
         data.name,
         new CPU(
           data.cpu.id,
@@ -179,22 +182,42 @@ const rateBuild = ({
   disliked?: boolean;
   comment?: string;
 }) => {
-  Notify.create({
-    type: "warning",
-    timeout: 5000,
-    message: `Rate Build`,
-    caption: "",
-  });
-}; // TODO:
+  if (build.value?.success) {
+    if (liked === true) {
+      build.value.data.increaseLikes();
+    } else if (disliked === true) {
+      build.value.data.increaseDislikes();
+    } else if (comment) {
+      build.value.data.uploadComment(comment);
+    }
+  }
+};
 
 const comment = ref<string>("Type comment...");
 watch(comment, () => {
   rateBuild({ comment: comment.value });
 });
 
-const saveBuild = () => {}; // TODO:
+const saveBuild = () => {
+  Notify.create({
+    type: "warning",
+    timeout: 5000,
+    message: `Build Saved!`,
+    caption: "",
+  });
+};
 
-const postBuild = () => {}; // TODO:
+const postBuild = () => {
+  if (build.value?.success) {
+    WallOfBuilds.postBuild(build.value.data);
+    Notify.create({
+      type: "warning",
+      timeout: 5000,
+      message: `Build posted to Wall of Builds!`,
+      caption: "",
+    });
+  }
+};
 
 const purchaseBuild = () => {}; // TODO:
 

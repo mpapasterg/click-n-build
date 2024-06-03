@@ -7,30 +7,21 @@ useHead({
   title: "Wall of Builds",
 });
 
-const builds = ref<FetchResponse<Array<{ id: string; name: string }>> | null>(
-  null
-);
+const builds = ref<FetchResponse<
+  Array<InstanceType<typeof BuildEntry>>
+> | null>(null);
 
 const loadBuildsData = async () => {
-  const response = await useTypedFetch(WoBGetResponseSchema, WoBGetURL, {
-    method: "GET",
-    server: false,
-  });
+  const buildsData = await WallOfBuilds.showBuilds();
 
-  if (response.error.value) {
+  if (buildsData === null) {
     builds.value = {
       success: false,
-      error: ServerErrorResponseSchema.parse(response.error.value.data.data),
+      error: {
+        message: "Could not load builds from Wall of Builds",
+      },
     };
   } else {
-    const data = response.data.value.builds;
-    const buildsData = new Array<{ id: string; name: string }>();
-    for (const build of data) {
-      buildsData.push({
-        id: build.id,
-        name: build.name,
-      });
-    }
     builds.value = {
       success: true,
       data: buildsData,

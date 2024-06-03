@@ -10,15 +10,19 @@ useHead({
   title: authStore.auth!.username,
 });
 
-const builds = ref<FetchResponse<Array<{ id: string; name: string }>> | null>(
-  null
-);
+const builds = ref<FetchResponse<
+  Array<InstanceType<typeof BuildEntry>>
+> | null>(null);
 
 const loadBuildsData = async () => {
-  const response = await useTypedFetch(WoBGetResponseSchema, WoBGetURL, {
-    method: "GET",
-    server: false,
-  });
+  const response = await useTypedFetch(
+    LibraryGetResponseSchema,
+    LibraryGetURL,
+    {
+      method: "GET",
+      server: false,
+    }
+  );
 
   if (response.error.value) {
     builds.value = {
@@ -27,13 +31,14 @@ const loadBuildsData = async () => {
     };
   } else {
     const data = response.data.value.builds;
-    const buildsData = new Array<{ id: string; name: string }>();
+    const buildsData = new Array<InstanceType<typeof BuildEntry>>();
     for (const build of data) {
-      buildsData.push({
-        id: build.id,
-        name: build.name,
-      });
+      buildsData.push(new BuildEntry(build.id, build.name));
     }
+    builds.value = {
+      success: true,
+      data: buildsData,
+    };
   }
 };
 
@@ -98,7 +103,7 @@ onMounted(async () => {
           </QMarkupTable>
           <div v-else key="error" class="fixed-center flex q-gutter-md">
             <div class="text-h2">Error fetching page:</div>
-            <div class="text-h6">{{ components.error.message }}</div>
+            <div class="text-h6">{{ builds.error.message }}</div>
           </div>
         </div>
       </div>
