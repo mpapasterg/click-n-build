@@ -298,7 +298,10 @@ const RatingSchema = new Schema<InterfaceType<typeof Rating>>({
     type: Boolean,
     required: true,
   },
-  comment: String,
+  comment: {
+    type: String,
+    required: true,
+  },
 });
 
 const InventoryItemSchema = new Schema<InterfaceType<typeof InventoryItem>>({

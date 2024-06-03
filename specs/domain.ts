@@ -22,16 +22,220 @@ export abstract class Component {
     this.manufacturer = manufacturer;
   }
 
-  public static queryComponents(
+  public static async queryComponents(
     componentType: string,
-    attributes: Map<string, string | number>
-  ): Array<Component> {
-    return [];
-  } // TODO:
+    attributes: { [k: string]: string }
+  ): Promise<Array<Component> | null> {
+    const response = await useTypedFetch(
+      ComponentGetResponseSchema,
+      ComponentGetURL.replace("[type]", componentType) +
+        useQueryParameters(attributes),
+      {
+        method: "GET",
+        server: false,
+      }
+    );
 
-  public static getComponents(componentType: string): Array<Component> {
-    return [];
-  } // TODO:
+    if (response.error.value) {
+      return null;
+    } else {
+      const data = response.data.value.components;
+      const componentsData = new Array<Component>();
+      switch (componentType) {
+        case "cpu":
+          for (const component of data as Array<InterfaceType<typeof CPU>>) {
+            componentsData.push(
+              new CPU(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.architecture,
+                component.socket,
+                component.cores,
+                component.threads,
+                component.base_clock,
+                component.oc_clock,
+                component.caches,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "gpu":
+          for (const component of data as Array<InterfaceType<typeof GPU>>) {
+            componentsData.push(
+              new GPU(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.architecture,
+                component.base_clock,
+                component.oc_clock,
+                component.vram_type,
+                component.vram_size,
+                component.pcie_type,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "ram":
+          for (const component of data as Array<InterfaceType<typeof RAM>>) {
+            componentsData.push(
+              new RAM(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.type,
+                component.modules,
+                component.size,
+                component.clock_speed,
+                component.cas_latency,
+                component.rgb_lighting,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "drive":
+          for (const component of data as Array<InterfaceType<typeof Drive>>) {
+            componentsData.push(
+              new Drive(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.storage_type,
+                component.size,
+                component.read_speed,
+                component.write_speed,
+                component.buffer_size,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "coolingsystem":
+          for (const component of data as Array<
+            InterfaceType<typeof CoolingSystem>
+          >) {
+            componentsData.push(
+              new CoolingSystem(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.type,
+                component.active_cooling,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "decoration":
+          for (const component of data as Array<
+            InterfaceType<typeof Decoration>
+          >) {
+            componentsData.push(
+              new Decoration(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.type,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+        case "motherboard":
+          for (const component of data as Array<
+            InterfaceType<typeof Motherboard>
+          >) {
+            componentsData.push(
+              new Motherboard(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.size_type,
+                component.socket,
+                component.chipset,
+                component.memory_channels,
+                component.pcie_slots,
+                component.external_io,
+                component.rgb_lighting,
+                component.watt_consumption,
+                component.ram_type,
+                component.nvme_slots
+              )
+            );
+          }
+          break;
+        case "psu":
+          for (const component of data as Array<InterfaceType<typeof PSU>>) {
+            componentsData.push(
+              new PSU(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.size_type,
+                component.max_wattage,
+                component.certification,
+                component.modularity_type
+              )
+            );
+          }
+          break;
+        case "case":
+          for (const component of data as Array<InterfaceType<typeof Case>>) {
+            componentsData.push(
+              new Case(
+                component.id,
+                component.name,
+                component.price,
+                component.image,
+                component.description,
+                component.manufacturer,
+                component.type,
+                component.motherboard_types_supported,
+                component.skin,
+                component.features,
+                component.watt_consumption
+              )
+            );
+          }
+          break;
+      }
+      return componentsData;
+    }
+  }
+
+  public static getComponents(
+    componentType: string
+  ): Promise<Array<Component> | null> {
+    return Component.queryComponents(componentType, {});
+  }
 }
 
 export abstract class BasicComponent extends Component {}
@@ -331,6 +535,10 @@ export class Case extends DependentComponent {
 }
 
 export class Build {
+<<<<<<< HEAD
+  public id: string;
+=======
+>>>>>>> 26a91fb30fb6b1dd111bf048fa4d89819c28065c
   public name: string;
   public cpu: CPU;
   public gpu: GPU;
@@ -343,6 +551,10 @@ export class Build {
   public pc_case: Case;
 
   public constructor(
+<<<<<<< HEAD
+    id: string,
+=======
+>>>>>>> 26a91fb30fb6b1dd111bf048fa4d89819c28065c
     name: string,
     cpu: CPU,
     gpu: GPU,
@@ -370,19 +582,148 @@ export class Build {
     answeredQuestions: Array<AnsweredQuestion>
   ): Array<Build> {
     return [];
-  } // TODO:
+  }
 
   public constraintsMet(): boolean {
-    return false;
-  } // TODO:
+    // Check Power Flow
+    const power_consumption =
+      (this.cpu.watt_consumption ?? 0) +
+      (this.gpu.watt_consumption ?? 0) +
+      (this.ram.watt_consumption ?? 0) +
+      (this.drive.watt_consumption ?? 0) +
+      (this.cooling_system.watt_consumption ?? 0) +
+      (this.decoration.watt_consumption ?? 0) +
+      (this.motherboard.watt_consumption ?? 0) +
+      (this.pc_case.watt_consumption ?? 0);
+    if (power_consumption > (this.psu.max_wattage ?? 0) + 100) {
+      return false;
+    }
 
-  public uploadComment(comment: string): void {} // TODO:
+    // Check sockets match between CPU and motherboard
+    if (
+      this.cpu.socket !== undefined &&
+      this.motherboard.socket !== undefined &&
+      this.cpu.socket !== this.motherboard.socket
+    ) {
+      return false;
+    }
 
-  public increaseLikes(): void {} // TODO:
+    // Check RAM compatibility with motherboard
+    if (
+      this.ram.type !== undefined &&
+      this.motherboard.ram_type !== undefined &&
+      this.ram.type !== this.motherboard.ram_type
+    ) {
+      return false;
+    }
 
-  public increaseDislikes(): void {} // TODO:
+    // Check GPU compatibility with motherboard
+    if (
+      this.gpu.pcie_type !== undefined &&
+      this.motherboard.pcie_slots !== undefined &&
+      this.motherboard.pcie_slots.length > 0 &&
+      !this.motherboard.pcie_slots.includes(this.gpu.pcie_type)
+    ) {
+      return false;
+    }
 
-  public saveBuild(): void {} // TODO:
+    // Check if PSU fits case
+    if (
+      this.psu.size_type !== undefined &&
+      this.pc_case.type !== undefined &&
+      this.psu.size_type !== this.pc_case.type
+    ) {
+      return false;
+    }
+
+    return true;
+  }
+
+  public uploadComment(comment: string): void {
+    useTypedFetch(
+      BuildRatePostResponseSchema,
+      BuildRatePostURL.replace("[id]", this.id),
+      {
+        method: "POST",
+        server: false,
+        body: new URLSearchParams(
+          useFormData({ comment: comment }) as any
+        ).toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+  }
+
+  public increaseLikes(): void {
+    useTypedFetch(
+      BuildRatePostResponseSchema,
+      BuildRatePostURL.replace("[id]", this.id),
+      {
+        method: "POST",
+        server: false,
+        body: new URLSearchParams(
+          useFormData({ liked: "true" }) as any
+        ).toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+  }
+
+  public increaseDislikes(): void {
+    useTypedFetch(
+      BuildRatePostResponseSchema,
+      BuildRatePostURL.replace("[id]", this.id),
+      {
+        method: "POST",
+        server: false,
+        body: new URLSearchParams(
+          useFormData({ disliked: "true" }) as any
+        ).toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+  }
+
+  public saveBuild(): void {
+    useTypedFetch(BuildPostResponseSchema, BuildPostURL, {
+      method: "POST",
+      server: false,
+      body: new URLSearchParams(
+        useFormData({
+          id: this.id,
+          name: this.name,
+          cpu: this.cpu.id,
+          gpu: this.gpu.id,
+          ram: this.ram.id,
+          drive: this.drive.id,
+          cooling_system: this.cooling_system.id,
+          decoration: this.decoration.id,
+          motherboard: this.motherboard.id,
+          psu: this.psu.id,
+          pc_case: this.pc_case.id,
+        }) as any
+      ).toString(),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+  }
+}
+
+export class BuildEntry {
+  public id: string;
+  public name: string;
+
+  public constructor(id: string, name: string) {
+    this.id = id;
+    this.name = name;
+  }
 }
 
 export class Library {
@@ -393,8 +734,10 @@ export class Library {
   }
 
   public inLibrary(buildName: string): boolean {
-    return false;
-  } // TODO:
+    return (
+      this.builds.find((build: Build) => build.name === buildName) !== undefined
+    );
+  }
 }
 
 export class WallOfBuilds {
@@ -404,11 +747,31 @@ export class WallOfBuilds {
     this.builds = builds;
   }
 
-  public showBuilds(): Array<Build> {
-    return [];
-  } // TODO:
+  public static async showBuilds(): Promise<Array<BuildEntry> | null> {
+    const response = await useTypedFetch(WoBGetResponseSchema, WoBGetURL, {
+      method: "GET",
+      server: false,
+    });
 
-  public postBuild(build: Build): void {} // TODO:
+    if (response.error.value) {
+      return null;
+    } else {
+      const data = response.data.value.builds;
+      const buildsData = new Array<BuildEntry>();
+      for (const build of data) {
+        buildsData.push(new BuildEntry(build.id, build.name));
+      }
+      return buildsData;
+    }
+  }
+
+  public static postBuild(build: Build): void {
+    useTypedFetch(
+      BuildPostPostResponseSchema,
+      BuildPostPostURL.replace("[id]", build.id),
+      { method: "POST", server: false }
+    );
+  }
 }
 
 export class BillingInformation {
@@ -479,7 +842,25 @@ export class Purchase {
     this.price = price;
   }
 
-  public placeOrder(): void {} // TODO:
+  public placeOrder(): void {
+    useTypedFetch(BuildPurchasePostResponseSchema, BuildPurchasePostURL, {
+      method: "POST",
+      server: false,
+      body: new URLSearchParams(
+        useFormData({
+          name: this.billing_information.name,
+          surname: this.billing_information.surname,
+          address: this.billing_information.address,
+          postal_code: this.billing_information.postal_code.toString(),
+          city: this.billing_information.city,
+          country: this.billing_information.country,
+        }) as any
+      ).toString(),
+      headers: {
+        "Content-Type": "application/x-www-form-urlencoded",
+      },
+    });
+  }
 }
 
 export abstract class User {
@@ -521,17 +902,8 @@ export class UserStatus {
   public constructor() {}
 
   public isLoggedIn(): boolean {
-    return false;
-  } // TODO:
-
-  public logIn(username: string, email: string): void {
-    this.username = username;
-    this.email = email;
-  }
-
-  public logOut(): void {
-    this.username = undefined;
-    this.email = undefined;
+    const auth = useAuthStore();
+    return auth.isAuthenticated;
   }
 }
 
@@ -557,10 +929,14 @@ export class Rating {
   }
 
   public updateRating(
-    comment: string | undefined,
     liked: boolean | undefined,
-    disliked: boolean | undefined
-  ) {} // TODO:
+    disliked: boolean | undefined,
+    comment: string | undefined
+  ) {
+    this.liked = liked ?? this.liked;
+    this.disliked = disliked ?? this.disliked;
+    this.comment = comment ?? this.comment;
+  }
 }
 
 export class Inventory {
@@ -584,8 +960,8 @@ export class InventoryItem {
 // Should be abstract class but due to bug in Nuxt auto-imports system it cannot be exported
 export class SpellChecker {
   public static spellCheck(comment: string): boolean {
-    return false;
-  } // TODO:
+    return true;
+  }
 }
 
 export abstract class BuildingMode {}
