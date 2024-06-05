@@ -2,11 +2,20 @@ export default defineEventHandler(
   withAuth(
     withID(async (id, event) => {
       // Get billing information data
-      const buildingInformationParseResult = await readValidatedBody(
-        event,
-        BuildPurchasePostRequestSchema.safeParse
-      );
-      if (!buildingInformationParseResult.success) {
+      const billingInformationFormData = await readFormData(event);
+      const billingInformationParseResult =
+        BuildPurchasePostRequestSchema.safeParse({
+          name: billingInformationFormData.get("name")?.toString(),
+          surname: billingInformationFormData.get("surname")?.toString(),
+          address: billingInformationFormData.get("address")?.toString(),
+          postal_code: billingInformationFormData
+            .get("postal_code")
+            ?.toString(),
+          city: billingInformationFormData.get("city")?.toString(),
+          country: billingInformationFormData.get("country")?.toString(),
+        });
+      if (!billingInformationParseResult.success) {
+        console.log(billingInformationParseResult.error);
         throw createError({
           statusCode: sanitizeStatusCode(400),
           statusMessage: sanitizeStatusMessage("Bad Request"),
@@ -15,7 +24,7 @@ export default defineEventHandler(
           },
         });
       }
-      const billingInformationData = buildingInformationParseResult.data;
+      const billingInformationData = billingInformationParseResult.data;
 
       // Check billing information validity
       const billingInformationObj = new BillingInformation(
@@ -29,6 +38,10 @@ export default defineEventHandler(
       if (!billingInformationObj.isValid()) {
         throw createError({
           statusCode: sanitizeStatusCode(400),
+          statusMessage: sanitizeStatusMessage("Bad Request"),
+          data: {
+            message: "Invalid billing information data",
+          },
         });
       }
 
@@ -43,13 +56,14 @@ export default defineEventHandler(
         .populate("motherboard")
         .populate("psu")
         .populate("pc_case")
+        .lean()
         .exec();
       if (build === null) {
         throw createError({
           statusCode: sanitizeStatusCode(400),
           statusMessage: sanitizeStatusMessage("Bad Request"),
           data: {
-            message: "Invalid billing information data",
+            message: `Build with ID '${id}' does not exist`,
           },
         });
       }
@@ -95,8 +109,8 @@ export default defineEventHandler(
       // Create purchase entry
       try {
         const purchase = await PurchaseModel.create({
-          build: build.id,
-          billing_information: billingInformation.id,
+          build: build._id,
+          billing_information: billingInformation._id,
           price: price,
         });
         purchase.save();

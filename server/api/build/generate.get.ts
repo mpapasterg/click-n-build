@@ -31,6 +31,7 @@ export default defineEventHandler(async (event) => {
   const candidateBuilds: Array<InterfaceType<typeof Build>> = [];
   for (const build of Build.generateCandidateBuilds(answers)) {
     candidateBuilds.push({
+      id: build.name,
       name: build.name,
       cpu: build.cpu,
       gpu: build.gpu,

@@ -22,20 +22,46 @@ export default defineEventHandler(
         },
       });
     }
-    console.log(build);
 
+    // Sanitize DB data
     build = {
-      name: build.name,
       id: build._id,
-      cpu: { ...build.cpu, id: build.cpu._id },
-      gpu: { ...build.gpu, id: build.gpu._id },
-      ram: { ...build.ram, id: build.ram._id },
-      drive: { ...build.drive, id: build.drive._id },
-      cooling_system: { ...build.cooling_system, id: build.cooling_system._id },
-      decoration: { ...build.decoration, id: build.decoration._id },
-      motherboard: { ...build.motherboard, id: build.motherboard._id },
-      psu: { ...build.psu, id: build.psu._id },
-      pc_case: { ...build.pc_case, id: build.pc_case._id },
+      _id: undefined,
+      name: build.name,
+      cpu: { ...build.cpu, id: build.cpu._id, _id: undefined, __v: undefined },
+      gpu: { ...build.gpu, id: build.gpu._id, _id: undefined, __v: undefined },
+      ram: { ...build.ram, id: build.ram._id, _id: undefined, __v: undefined },
+      drive: {
+        ...build.drive,
+        id: build.drive._id,
+        _id: undefined,
+        __v: undefined,
+      },
+      cooling_system: {
+        ...build.cooling_system,
+        id: build.cooling_system._id,
+        _id: undefined,
+        __v: undefined,
+      },
+      decoration: {
+        ...build.decoration,
+        id: build.decoration._id,
+        _id: undefined,
+        __v: undefined,
+      },
+      motherboard: {
+        ...build.motherboard,
+        id: build.motherboard._id,
+        _id: undefined,
+        __v: undefined,
+      },
+      psu: { ...build.psu, id: build.psu._id, _id: undefined, __v: undefined },
+      pc_case: {
+        ...build.pc_case,
+        id: build.pc_case._id,
+        _id: undefined,
+        __v: undefined,
+      },
     };
 
     // Return found build

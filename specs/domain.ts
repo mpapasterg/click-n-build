@@ -535,10 +535,7 @@ export class Case extends DependentComponent {
 }
 
 export class Build {
-<<<<<<< HEAD
   public id: string;
-=======
->>>>>>> 26a91fb30fb6b1dd111bf048fa4d89819c28065c
   public name: string;
   public cpu: CPU;
   public gpu: GPU;
@@ -551,10 +548,7 @@ export class Build {
   public pc_case: Case;
 
   public constructor(
-<<<<<<< HEAD
     id: string,
-=======
->>>>>>> 26a91fb30fb6b1dd111bf048fa4d89819c28065c
     name: string,
     cpu: CPU,
     gpu: GPU,
@@ -566,6 +560,7 @@ export class Build {
     psu: PSU,
     pc_case: Case
   ) {
+    this.id = id;
     this.name = name;
     this.gpu = gpu;
     this.cpu = cpu;
@@ -690,29 +685,38 @@ export class Build {
     );
   }
 
-  public saveBuild(): void {
-    useTypedFetch(BuildPostResponseSchema, BuildPostURL, {
-      method: "POST",
-      server: false,
-      body: new URLSearchParams(
-        useFormData({
-          id: this.id,
-          name: this.name,
-          cpu: this.cpu.id,
-          gpu: this.gpu.id,
-          ram: this.ram.id,
-          drive: this.drive.id,
-          cooling_system: this.cooling_system.id,
-          decoration: this.decoration.id,
-          motherboard: this.motherboard.id,
-          psu: this.psu.id,
-          pc_case: this.pc_case.id,
-        }) as any
-      ).toString(),
-      headers: {
-        "Content-Type": "application/x-www-form-urlencoded",
-      },
-    });
+  public async saveBuild(): Promise<string> {
+    const response = await useTypedFetch(
+      BuildPostResponseSchema,
+      BuildPostURL,
+      {
+        method: "POST",
+        server: false,
+        body: new URLSearchParams(
+          useFormData({
+            name: this.name,
+            cpu: this.cpu.id,
+            gpu: this.gpu.id,
+            ram: this.ram.id,
+            drive: this.drive.id,
+            cooling_system: this.cooling_system.id,
+            decoration: this.decoration.id,
+            motherboard: this.motherboard.id,
+            psu: this.psu.id,
+            pc_case: this.pc_case.id,
+          }) as any
+        ).toString(),
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      }
+    );
+
+    if (response.error.value) {
+      return "";
+    } else {
+      return response.data.value.id;
+    }
   }
 }
 
@@ -957,8 +961,7 @@ export class InventoryItem {
   }
 }
 
-// Should be abstract class but due to bug in Nuxt auto-imports system it cannot be exported
-export class SpellChecker {
+export abstract class SpellChecker {
   public static spellCheck(comment: string): boolean {
     return true;
   }

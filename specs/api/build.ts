@@ -34,7 +34,9 @@ export const BillingInformationSchema = z.object({
   name: z.string(),
   surname: z.string(),
   address: z.string(),
-  postal_code: z.number(),
+  postal_code: z
+    .string()
+    .transform((postal_code) => Number.parseInt(postal_code)),
   city: z.string(),
   country: z.string(),
 });
@@ -56,9 +58,13 @@ export const BuildGetResponseSchema = ServerResponseSchema.extend(
 
 export const BuildPostURL: string = "/api/build/";
 export const BuildPostRequestSchema = ClientRequestSchema.extend(
-  BuildSchema.shape
+  BuildSchema.extend({
+    id: z.undefined(),
+  }).shape
 );
-export const BuildPostResponseSchema = ServerResponseSchema;
+export const BuildPostResponseSchema = ServerResponseSchema.extend({
+  id: IDSchema,
+});
 
 // POST /api/build/[id]/post
 
@@ -78,8 +84,8 @@ export const BuildPurchasePostResponseSchema = ServerResponseSchema;
 
 export const BuildRatePostURL: string = "/api/build/[id]/rate";
 export const BuildRatePostRequestSchema = ClientRequestSchema.extend({
-  liked: z.boolean(),
-  disliked: z.boolean(),
+  liked: z.union([z.literal("true"), z.literal("false")]).optional(),
+  disliked: z.union([z.literal("true"), z.literal("false")]).optional(),
   comment: z.string().optional(),
 });
 export const BuildRatePostResponseSchema = ServerResponseSchema;

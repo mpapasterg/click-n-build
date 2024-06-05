@@ -18,7 +18,7 @@ export const withAuth =
     ...args: Tail<Parameters<T>>
   ) => Promise<ReturnType<T> | void>) =>
   async (event, ...args) => {
-    const accessToken: string | undefined = getHeader(event, "x-auth-token");
+    const accessToken: string | undefined = getCookie(event, "x-access-token");
 
     // Check if access token exists
     if (accessToken === undefined) {
@@ -41,6 +41,7 @@ export const withAuth =
         )
       ).payload;
     } catch (error) {
+      console.log(error);
       throw createError({
         statusCode: sanitizeStatusCode(401),
         statusText: sanitizeStatusMessage("Unauthorized"),

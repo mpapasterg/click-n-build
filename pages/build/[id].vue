@@ -209,7 +209,7 @@ const saveBuild = () => {
 
 const postBuild = () => {
   if (build.value?.success) {
-    WallOfBuilds.postBuild(build.value.data);
+    WallOfBuilds.postBuild(build.value.data as InstanceType<typeof Build>);
     Notify.create({
       type: "warning",
       timeout: 5000,

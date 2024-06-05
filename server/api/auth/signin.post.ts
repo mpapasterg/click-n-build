@@ -47,11 +47,12 @@ export default defineEventHandler(async (event) => {
     email: user.email,
     username: user.username,
   };
+  const expirationTime = new Date().setDate(new Date().getDate() + 1);
   const accessToken = await new SignJWT(auth)
     .setProtectedHeader({
       alg: "HS256",
     })
-    .setExpirationTime(60 * 60 * 24)
+    .setExpirationTime(expirationTime)
     .sign(new TextEncoder().encode(process.env.JWT_SECRET));
 
   // Store access token to cookie
@@ -59,7 +60,7 @@ export default defineEventHandler(async (event) => {
     httpOnly: true,
     sameSite: "strict",
     secure: true,
-    maxAge: 60 * 60 * 24,
+    maxAge: expirationTime,
     path: "/",
   });
 
